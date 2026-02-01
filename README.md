@@ -1,8 +1,9 @@
-Intelligent Database Query Optimization using Multi-Agent Systems and Knowledge Graphs
+# 🧠 Intelligent Database Query Optimizer
+## *Multi-Agent AI System with Knowledge Graphs & Reinforcement Learning*
 
 🎯 Project Overview
 Problem Statement
-Database query optimization remains largely rule-based and static, failing to adapt to changing data patterns, workloads, and system conditions. Current database optimizers use static cost models that become outdated and cannot effectively handle complex multi-query workloads in dynamic environments.
+Database query optimization remains largely rule-based and static, failing to adapt to changing data patterns, workloads, and system conditions. Traditional database optimizers use static cost models that become outdated and cannot effectively handle complex multi-query workloads in dynamic environments.
 
 Solution Approach
 This project develops an intelligent database query optimization system that combines:
@@ -12,22 +13,6 @@ LLM-based Agents for SQL query understanding and optimization strategy generatio
 Multi-Agent Reinforcement Learning for adaptive optimization decisions
 Automated Planning (PDDL) for structured query execution planning
 Hybrid AI Architecture integrating symbolic reasoning with neural optimization
-
-🏗️ System Architecture
-
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│ Database Schema │    │ LLM Query       │    │ Multi-Agent RL  │
-│ Knowledge Graph │◄──►│ Understanding   │◄──►│ Optimizer       │
-│                 │    │ Agent           │    │                 │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         ▲                       ▲                       ▲
-         │                       │                       │
-         ▼                       ▼                       ▼
-┌─────────────────────────────────────────────────────────────────┐
-│         Database Execution Environment                          │
-│    (Query Workloads, Execution Plans, Performance Metrics)     │
-└─────────────────────────────────────────────────────────────────┘
-
 
 🔧 Technical Components
 1. Knowledge Graph System
@@ -56,7 +41,6 @@ JOB (Join Order Benchmark): Real-world queries from Internet Movie Database
 Custom Workloads: Synthetic workloads with varying characteristics
 2. Baseline Comparisons
 PostgreSQL Default Optimizer: Industry-standard cost-based optimizer
-MySQL Optimizer: Alternative commercial optimizer
 Static Rule-Based Optimizer: Simple heuristic-based approach
 Random Query Plans: Statistical lower bound baseline
 3. Performance Metrics
@@ -76,21 +60,6 @@ Phase 1: Single Query Optimization
 Experiment 1.1: Join Ordering Optimization
 - Dataset: TPC-H queries with 3-8 joins
 
-# 🧠 Intelligent Database Query Optimizer
-## *Multi-Agent AI System with Knowledge Graphs & Reinforcement Learning*
-
-<div align="center">
-
-[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-13+-336791.svg)](https://www.postgresql.org/)
-[![LangChain](https://img.shields.io/badge/LangChain-Latest-green.svg)](https://langchain.com/)
-[![Reinforcement Learning](https://img.shields.io/badge/RL-Enabled-orange.svg)](#)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
-*Revolutionizing database performance through AI-driven query optimization*
-
-</div>
-
 ---
 
 ## 🚀 What This Does
@@ -103,15 +72,13 @@ Transform your database queries from **slow and inefficient** to **lightning-fas
 - 🔍 **Knowledge graphs** that understand your database schema deeply
 - 💬 **LLM-powered** query understanding and explanation
 
-## 🎯 The Problem We're Solving
-
 Traditional database optimizers are **static rule-based systems** that:
 - ❌ Can't adapt to changing data patterns
 - ❌ Use outdated cost models
 - ❌ Fail with complex multi-query workloads
 - ❌ Provide no explanation for their decisions
 
-## 💡 Our Revolutionary Solution
+## 💡 Solution Arcihtecture
 
 A **hybrid AI architecture** combining the best of multiple worlds:
 
@@ -144,37 +111,6 @@ A **hybrid AI architecture** combining the best of multiple worlds:
 | 🔄 **Planning** | *Future: PDDL Integration* | 🚧 **Planned** | *Advanced query planning* |
 
 </div>
-
-### 🛠️ Current Implementation
-
-- **📊 Database Schema Knowledge Graph** - *✅ Implemented*  
-  Extracts and represents database schema, relationships, and statistics
-  
-- **🤖 LLM Query Understanding Agent** - *✅ Implemented*  
-  Uses LangChain and HuggingFace embeddings for SQL query analysis
-  
-- **📈 Rule-Based Optimizer** - *✅ Implemented*  
-  Heuristic-based optimization strategies for baseline comparison
-  
-- **🔄 Multi-Engine Support** - *✅ Implemented*  
-  Works with both PostgreSQL and SQLite databases
-
-### 🚧 Future AI Agents (Planned)
-
-- **🎯 RL Join Ordering Agent** - *Deep Q-Networks (DQN)*
-- **📊 RL Index Advisor** - *Policy Gradient Methods*  
-- **💾 Cache Manager** - *Multi-Armed Bandit*
-- **⚙️ Resource Allocator** - *Actor-Critic Methods*
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-```bash
-Python 3.8+
-PostgreSQL 13+
-4GB+ RAM (8GB recommended)
-```
 
 ### Installation
 
@@ -224,31 +160,19 @@ kg.print_summary()
 
 <div align="center">
 
-### 🏆 Current Testing Results
+### 🏆 Current Testings
 
 | Component | Status | Test Coverage |
 |-----------|--------|--------------|
-| **Knowledge Graph** | ✅ **Working** | Schema extraction, relationships |
-| **PostgreSQL Support** | ✅ **Working** | Connection, metadata extraction |
-| **SQLite Support** | ✅ **Working** | Full functionality |
-| **LLM Integration** | ✅ **Working** | Query understanding, embeddings |
-| **Rule-Based Optimizer** | ✅ **Working** | Heuristic strategies |
-
-*Comprehensive benchmarks planned for full system integration*
+| **Knowledge Graph** | Schema extraction, relationships |
+| **PostgreSQL Support** | Connection, metadata extraction |
+| **SQLite Support** | Full functionality |
+| **LLM Integration** | Query understanding, embeddings |
+| **Rule-Based Optimizer** | Heuristic strategies |
 
 </div>
 
-### 🎯 What Sets This Apart
-
-| Traditional Approach | 🧠 Our Research System |
-|---------------------|------------------------|
-| Static rule-based | 🤖 **Multi-component AI integration** |
-| Single database engine | 🔄 **PostgreSQL + SQLite support** |
-| No schema understanding | 🕸️ **Deep knowledge graph representation** |
-| Black-box decisions | 💬 **Explainable optimization strategies** |
-| Fixed optimization | 📈 **Research-driven adaptive framework** |
-
-## 📊 Comprehensive Evaluation Framework
+## 📊 Evaluation Framework
 
 ### Evaluation Methodology
 
@@ -351,12 +275,6 @@ class EvaluationPipeline:
                 return scipy.stats.ttest_rel(results_a, results_b)
 ```
 
-**Real-time Monitoring:**
-- Performance Dashboard: Live metrics visualization
-- Query Execution Tracking: Individual query performance monitoring
-- Resource Utilization Graphs: CPU, memory, I/O usage over time
-- Learning Progress Visualization: RL agent training curves
-
 #### 6. Success Criteria & Validation
 
 **Technical Success Metrics**
@@ -412,116 +330,3 @@ class EvaluationPipeline:
     ├── performance_charts/
     └── statistical_analysis/
 ```
-
-## 🎯 Research Contributions
-
-### 🔬 Research Approach
-- **Hybrid AI Architecture:** Combining Knowledge Graphs + LLMs + Rule-based optimization
-- **Multi-Engine Support:** Works with PostgreSQL and SQLite
-- **Extensible Framework:** Designed for future RL and planning integration
-- **Academic Foundation:** Built for research in database optimization
-
-### 📈 Current Implementation
-- **✅ Knowledge Graph:** Database schema extraction and representation
-- **✅ LLM Integration:** Query understanding with LangChain
-- **✅ Rule-Based Baseline:** Heuristic optimization strategies
-- **✅ Multi-Engine:** PostgreSQL and SQLite support
-
-### 🎯 Planned Enhancements
-- **🚧 RL Agents:** Deep reinforcement learning for adaptive optimization
-- **🚧 PDDL Planning:** Automated planning for query execution
-- **🚧 Comprehensive Benchmarking:** TPC-H, TPC-DS, JOB evaluation
-- **🚧 Performance Optimization:** End-to-end system integration
-
-## 🛠️ Development & Testing
-
-### Running Tests
-
-```bash
-# Test knowledge graph functionality
-python test_knowledge_graph.py
-
-# Test PostgreSQL connection
-python tests/unit_tests/test_postgresql_connection.py
-
-# Test database schema extraction
-python -c "from src.knowledge_graph.schema_ontology import DatabaseSchemaKG; kg = DatabaseSchemaKG(); print('Schema KG ready!')"
-```
-
-### Current Capabilities
-
-```python
-# Database schema analysis
-from src.knowledge_graph.schema_ontology import DatabaseSchemaKG
-from src.database_environment.db_simulator import DatabaseSimulator
-
-# Multi-engine database support
-db_sqlite = DatabaseSimulator(db_type="sqlite")
-db_postgres = DatabaseSimulator(db_type="postgresql")
-
-# Intelligent join order suggestions
-kg = DatabaseSchemaKG(db_type="postgresql")
-optimal_order = kg.suggest_join_order(["customers", "orders", "lineitem"])
-print(f"Suggested order: {optimal_order}")
-```
-
-## 🤝 Contributing
-
-We welcome contributions! Here's how you can help:
-
-- 🐛 **Bug Reports:** Open an issue with detailed reproduction steps
-- 💡 **Feature Requests:** Suggest new optimization techniques
-- 🔬 **Research:** Contribute new benchmarks or evaluation methods
-- 📚 **Documentation:** Improve guides and examples
-
-### Development Setup
-
-```bash
-# Development install
-pip install -e ."[dev]"
-
-# Run tests
-pytest tests/ -v
-
-# Code formatting
-black src/ && isort src/
-```
-
-## � Contact & Links
-
-<div align="center">
-
-**Built with ❤️ for the database optimization community**
-
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-black?logo=github)](https://github.com/yourusername)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)](https://linkedin.com/in/yourprofile)
-[![Email](https://img.shields.io/badge/Email-Contact-red?logo=gmail)](mailto:your.email@example.com)
-
----
-
-### 🌟 Star this repo if it helped you optimize your database queries!
-
-</div>
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- TPC Council for benchmark datasets
-- PostgreSQL & SQLite communities
-- OpenAI & HuggingFace for AI models
-- Research contributions from database optimization literature
-
----
-
-<div align="center">
-
-**🚀 Ready to make your database fly? Let's optimize! 🚀**
-
-*"Making slow queries fast, one AI agent at a time"*
-
-</div>
-
-
