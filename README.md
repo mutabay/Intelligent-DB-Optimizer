@@ -31,8 +31,8 @@ Database query optimization is mostly rule-based and static. Current optimizers 
 | LLM Agent | LangChain + HuggingFace |
 | Rule-Based Optimizer | Python Heuristics |
 | Database Environment | PostgreSQL + SQLite |
-| RL Agents | PyTorch (planned) | 🚧 Future |
-| PDDL Planning | (planned) | 🚧 Future |
+| RL Agents | | |
+| PDDL Planning |||
 
 ## Installation
 
