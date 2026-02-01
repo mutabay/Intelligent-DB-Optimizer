@@ -1,0 +1,30 @@
+# Database
+psycopg2-binary==2.9.7
+sqlparse==0.5.5
+python-dotenv==1.0.1
+
+# Basic ML and Data
+numpy==1.24.3
+pandas==2.0.3
+
+# Logging and Config
+loguru==0.7.2
+pyyaml==6.0.1
+
+# Testing
+pytest==9.0.2
+
+# AI/ML Dependencies (for real implementation)
+torch==2.1.0
+transformers==4.35.0
+sentence-transformers==2.2.2
+networkx==3.1
+
+
+# LangChain ecosystem
+langchain==1.2.7
+langchain-community==0.4.1
+langchain-experimental==0.4.1
+langchain-openai==1.1.7
+
+ollama==0.1.7

@@ -1,0 +1,12 @@
+# Database Configuration
+POSTGRES_HOST=127.0.0.1
+POSTGRES_PORT=5433
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=bayram
+POSTGRES_DB=postgres
+
+# SQLite Configuration (for development)
+SQLITE_DB_PATH=test.db
+
+# Logging Configuration
+LOG_LEVEL=INFO
