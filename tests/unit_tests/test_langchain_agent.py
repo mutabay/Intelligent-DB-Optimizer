@@ -1,6 +1,7 @@
 """
 Test LangChain-based query agent.
 """
+
 import sys
 import os
 
@@ -13,57 +14,85 @@ from src.knowledge_graph.schema_ontology import DatabaseSchemaKG
 from src.agents.llm_query_agent import LangChainQueryAgent
 from src.utils.logging import logger
 
-def test_langchain_agent():
-    """Test LangChain query agent."""
+def test_enhanced_llm_agent():
+    """Test LLM agent with different providers."""
     
-    logger.info("=== Testing LangChain Query Agent ===")
+    logger.info("=== Testing LLM Query Agent ===")
     
     # Setup
-    db = DatabaseSimulator(db_type="sqlite", db_path="test_langchain.db")
+    db = DatabaseSimulator(db_type="sqlite", db_path="test_enhanced_llm.db")
     
     try:
         db.connect()
         db.create_sample_tables()
         
         # Add sample data
-        db.execute_query("INSERT INTO customers (c_name, c_mktsegment) VALUES ('Customer 1', 'BUILDING')")
-        db.execute_query("INSERT INTO orders (o_custkey, o_totalprice) VALUES (1, 1500)")
+        sample_data = [
+            "INSERT INTO customers (c_name, c_mktsegment) VALUES ('Customer 1', 'BUILDING')",
+            "INSERT INTO customers (c_name, c_mktsegment) VALUES ('Customer 2', 'AUTOMOBILE')",
+            "INSERT INTO orders (o_custkey, o_totalprice) VALUES (1, 1500)",
+            "INSERT INTO orders (o_custkey, o_totalprice) VALUES (2, 2500)",
+            "INSERT INTO lineitem (l_orderkey, l_quantity, l_extendedprice) VALUES (1, 5, 100)",
+            "INSERT INTO lineitem (l_orderkey, l_quantity, l_extendedprice) VALUES (2, 3, 150)"
+        ]
+        
+        for query in sample_data:
+            db.execute_query(query)
         
         # Build knowledge graph
         kg = DatabaseSchemaKG(db_type="sqlite")
         kg.build_from_database(db.connection)
         
-        # Create LangChain agent
-        agent = LangChainQueryAgent(kg, "test_langchain.db")
+        # Test different LLM providers
+        providers_to_test = ["simple", "ollama"]  # Add "openai" if you have API key
         
-        # Test query
-        test_query = "SELECT c.c_name, o.o_totalprice FROM customers c JOIN orders o ON c.c_custkey = o.o_custkey"
+        for provider in providers_to_test:
+            print(f"\n{'='*60}")
+            print(f"Testing with LLM Provider: {provider.upper()}")
+            print(f"{'='*60}")
+            
+            # Create agent with specific provider
+            agent = LangChainQueryAgent(kg, llm_provider=provider)
+            
+            # Test complex query
+            test_query = """
+            SELECT c.c_name, c.c_mktsegment, o.o_totalprice, l.l_quantity
+            FROM customers c
+            JOIN orders o ON c.c_custkey = o.o_custkey
+            JOIN lineitem l ON o.o_orderkey = l.l_orderkey
+            WHERE c.c_mktsegment = 'BUILDING'
+            AND o.o_totalprice > 1000
+            ORDER BY o.o_totalprice DESC
+            """
+            
+            print(f"Testing query: {test_query.strip()}")
+            
+            # Get detailed explanation
+            explanation = agent.explain_optimization(test_query)
+            print(f"\nOptimization Explanation:\n{explanation}")
+            
+            # Test simple query too
+            simple_query = "SELECT COUNT(*) FROM customers WHERE c_mktsegment = 'BUILDING'"
+            analysis = agent.analyze_query(simple_query)
+            print(f"\nSimple Query Analysis:")
+            print(f"LLM Provider: {analysis.get('llm_provider', 'unknown')}")
+            print(f"Analysis: {analysis.get('llm_analysis', 'No analysis')}")
         
-        print(f"Testing query: {test_query}")
-        
-        # Analyze query
-        analysis = agent.analyze_query(test_query)
-        print(f"\nAnalysis: {analysis}")
-        
-        # Optimize query
-        optimization = agent.optimize_query(test_query)
-        print(f"\nOptimization: {optimization}")
-        
-        logger.info("LangChain agent test completed")
+        logger.info("LLM agent test completed")
         return True
         
     except Exception as e:
-        logger.error(f"LangChain agent test failed: {e}")
+        logger.error(f"LLM agent test failed: {e}")
         return False
         
     finally:
         db.disconnect()
-        if os.path.exists("test_langchain.db"):
-            os.remove("test_langchain.db")
+        if os.path.exists("test_enhanced_llm.db"):
+            os.remove("test_enhanced_llm.db")
 
 if __name__ == "__main__":
-    success = test_langchain_agent()
+    success = test_enhanced_llm_agent()
     if success:
-        print("LangChain Query Agent is working!")
+        print("\nLLM Query Agent is working!")
     else:
-        print("LangChain agent test failed.")
+        print("\nLLM agent test failed.")
