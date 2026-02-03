@@ -290,3 +290,99 @@ class DatabaseSchemaKG:
         print(f"\nRelationships ({len(self.relationships)}):")
         for rel in self.relationships:
             print(f"  - {rel.left_table}.{rel.left_column} -> {rel.right_table}.{rel.right_column}")
+    
+    def get_table_relationships(self, table1=None, table2=None, table_names=None):
+        """Get relationship information between tables.
+        
+        Args:
+            table1: First table name (for pairwise relationship check)
+            table2: Second table name (for pairwise relationship check)
+            table_names: Optional list of specific tables to analyze.
+                        If None, analyzes all tables.
+        
+        Returns:
+            List of relationships (if checking specific table pair)
+            or Dictionary mapping table names to lists of related table names
+        """
+        # Handle pairwise relationship check
+        if table1 is not None and table2 is not None:
+            found_relationships = []
+            for rel in self.relationships:
+                if (rel.left_table == table1 and rel.right_table == table2) or \
+                   (rel.left_table == table2 and rel.right_table == table1):
+                    found_relationships.append(rel)
+            return found_relationships
+        
+        # Handle general relationship mapping
+        if table_names is None:
+            table_names = list(self.tables.keys())
+        
+        relationships = {}
+        
+        for table_name in table_names:
+            relationships[table_name] = []
+            
+            # Find all tables related to this one
+            for rel in self.relationships:
+                if rel.left_table == table_name and rel.right_table not in relationships[table_name]:
+                    relationships[table_name].append(rel.right_table)
+                elif rel.right_table == table_name and rel.left_table not in relationships[table_name]:
+                    relationships[table_name].append(rel.left_table)
+        
+        return relationships
+    
+    def generate_optimization_hints(self, query: str) -> List[str]:
+        """Generate optimization hints based on query and schema knowledge.
+        
+        Args:
+            query: SQL query text
+            
+        Returns:
+            List of optimization hints/suggestions
+        """
+        hints = []
+        query_lower = query.lower()
+        
+        # Extract table names from query (simplified)
+        tables_in_query = []
+        words = query_lower.split()
+        for i, word in enumerate(words):
+            if word in ['from', 'join']:
+                if i + 1 < len(words):
+                    table_name = words[i + 1].strip(',').split()[0]
+                    if table_name in self.tables and table_name not in tables_in_query:
+                        tables_in_query.append(table_name)
+        
+        # Generate hints based on analysis
+        if len(tables_in_query) > 1:
+            # Multi-table query hints
+            hints.append("Consider join order optimization for better performance")
+            
+            # Check for missing indexes on join conditions
+            if 'join' in query_lower and 'on' in query_lower:
+                hints.append("Ensure appropriate indexes exist on join columns")
+        
+        if 'where' in query_lower:
+            hints.append("Consider creating indexes on WHERE clause columns")
+            
+        if any(agg in query_lower for agg in ['sum', 'count', 'avg', 'max', 'min']):
+            hints.append("Aggregation detected - consider partial aggregation or materialized views")
+            
+        if 'group by' in query_lower:
+            hints.append("GROUP BY optimization: ensure proper indexing and consider sort order")
+            
+        if 'order by' in query_lower:
+            hints.append("ORDER BY detected - consider indexes to avoid explicit sorting")
+            
+        # Schema-specific hints
+        for table in tables_in_query:
+            if table in self.tables:
+                table_info = self.tables[table]
+                if table_info.row_count > 100000:  # Large table
+                    hints.append(f"Table '{table}' is large ({table_info.row_count} rows) - ensure selective filtering")
+        
+        # If no specific hints, provide general guidance
+        if not hints:
+            hints.append("Query appears optimized based on available schema knowledge")
+            
+        return hints

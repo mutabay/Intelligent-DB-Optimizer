@@ -133,7 +133,7 @@ class TestSystemIntegration:
         assert all(0 <= val <= 1 for val in state), "State values not normalized"
         
         # Test DQN action selection
-        actions = system.dqn_system.get_actions(state)
+        actions = system.dqn_system.get_actions_list(state)
         assert len(actions) == 4, "Invalid number of agent actions"
         assert all(isinstance(action, int) for action in actions), "Invalid action types"
         
@@ -213,8 +213,8 @@ class TestSystemIntegration:
             assert training_results["total_episodes"] == 5, "Incorrect episode count"
             
             # Verify training affected the agents
-            initial_actions = system.dqn_system.get_actions([0.5] * 12)
-            post_training_actions = system.dqn_system.get_actions([0.5] * 12)
+            initial_actions = system.dqn_system.get_actions_list([0.5] * 12)
+            post_training_actions = system.dqn_system.get_actions_list([0.5] * 12)
             # Actions might be same due to short training, but system should not crash
             
             logger.info("✅ Training integration test passed")

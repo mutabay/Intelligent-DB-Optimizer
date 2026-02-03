@@ -203,7 +203,7 @@ class CostEstimator:
         }
         logger.info(f"Registered statistics for table {table_name}")
     
-    def estimate_query_cost(self, execution_plan: Dict[str, Any]) -> Tuple[float, List[OperationCost]]:
+    def estimate_query_cost(self, execution_plan: Dict[str, Any]) -> Tuple[float, Dict[str, float]]:
         """
         Estimate total cost for a query execution plan.
         
@@ -211,37 +211,48 @@ class CostEstimator:
             execution_plan: Dictionary describing the execution plan
             
         Returns:
-            Tuple of (total_cost, operation_costs_list)
+            Tuple of (total_cost, cost_breakdown_dict)
         """
         operation_costs = []
+        cost_breakdown = {}
         
         # Process different types of operations in the plan
         if 'scan_operations' in execution_plan:
+            scan_costs = []
             for scan_op in execution_plan['scan_operations']:
                 cost = self._estimate_scan_operation_cost(scan_op)
                 operation_costs.append(cost)
+                scan_costs.append(cost.total_cost)
+            cost_breakdown['scan_cost'] = sum(scan_costs)
         
         if 'join_operations' in execution_plan:
+            join_costs = []
             for join_op in execution_plan['join_operations']:
                 cost = self._estimate_join_operation_cost(join_op)
                 operation_costs.append(cost)
+                join_costs.append(cost.total_cost)
+            cost_breakdown['join_cost'] = sum(join_costs)
         
         if 'aggregation_operations' in execution_plan:
+            agg_costs = []
             for agg_op in execution_plan['aggregation_operations']:
                 cost = self._estimate_aggregation_operation_cost(agg_op)
                 operation_costs.append(cost)
+                agg_costs.append(cost.total_cost)
+            cost_breakdown['aggregation_cost'] = sum(agg_costs)
         
         # Calculate total cost
         total_cost = sum(op_cost.total_cost for op_cost in operation_costs)
+        cost_breakdown['total_cost'] = total_cost
         
-        # Store estimation for learning
+        # Store estimation for learning (keep original format for internal use)
         self.estimation_history.append({
             'plan': execution_plan,
             'estimated_cost': total_cost,
             'operation_costs': operation_costs
         })
         
-        return total_cost, operation_costs
+        return total_cost, cost_breakdown
     
     def _estimate_scan_operation_cost(self, scan_operation: Dict[str, Any]) -> OperationCost:
         """Estimate cost for a scan operation."""
@@ -326,7 +337,14 @@ class CostEstimator:
         Returns:
             Detailed cost breakdown
         """
-        total_cost, operation_costs = self.estimate_query_cost(execution_plan)
+        total_cost, basic_breakdown = self.estimate_query_cost(execution_plan)
+        
+        # Get detailed operation costs from the latest estimation
+        if self.estimation_history:
+            latest_estimation = self.estimation_history[-1]
+            operation_costs = latest_estimation['operation_costs']
+        else:
+            operation_costs = []
         
         # Aggregate costs by type
         cost_by_type = {}
@@ -349,6 +367,7 @@ class CostEstimator:
             'total_cpu_cost': total_cpu,
             'total_io_cost': total_io,
             'total_memory_cost': total_memory,
+            **basic_breakdown,  # Include the basic breakdown for test compatibility
             'cost_by_operation_type': {
                 op_type: {
                     'count': len(costs),

@@ -79,11 +79,10 @@ def test_enhanced_llm_agent():
             print(f"Analysis: {analysis.get('llm_analysis', 'No analysis')}")
         
         logger.info("LLM agent test completed")
-        return True
         
     except Exception as e:
         logger.error(f"LLM agent test failed: {e}")
-        return False
+        pytest.fail(f"LLM agent test failed: {e}")
         
     finally:
         db.disconnect()

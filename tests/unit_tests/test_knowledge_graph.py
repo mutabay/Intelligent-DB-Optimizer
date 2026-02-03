@@ -142,14 +142,13 @@ def test_knowledge_graph():
         logger.info("Test 10 passed: Summary printed successfully")
         
         logger.info("All knowledge graph tests completed successfully")
-        return True
         
     except AssertionError as e:
         logger.error(f"Test assertion failed: {e}")
-        return False
+        pytest.fail(f"Test assertion failed: {e}")
     except Exception as e:
         logger.error(f"Knowledge graph test failed: {e}")
-        return False
+        pytest.fail(f"Knowledge graph test failed: {e}")
         
     finally:
         # Clean up
@@ -176,16 +175,15 @@ def test_database_type_validation():
             invalid_kg = DatabaseSchemaKG(db_type="invalid_db")
             invalid_kg._get_metadata_extractor()  # This should raise an error
             logger.error("Should have raised error for invalid database type")
-            return False
+            pytest.fail("Should have raised error for invalid database type")
         except ValueError as e:
             logger.info(f"Correctly caught invalid database type error: {e}")
         
         logger.info("Database type validation tests passed")
-        return True
         
     except Exception as e:
         logger.error(f"Database type validation test failed: {e}")
-        return False
+        pytest.fail(f"Database type validation test failed: {e}")
 
 if __name__ == "__main__":
     # Run main functionality test

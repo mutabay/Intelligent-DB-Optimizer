@@ -1,11 +1,14 @@
 """
-Optimization package for intelligent database query optimization.
+Query optimization components.
 
-This package contains the core optimization algorithms and strategies
-used by the intelligent database optimizer system.
+Includes query optimizers and optimization strategies.
 """
 
-from .query_optimizer import QueryOptimizer
-from .cost_estimator import CostEstimator
+from .query_optimizer import QueryOptimizer, OptimizationStrategy
+
+__all__ = [
+    "QueryOptimizer",
+    "OptimizationStrategy"
+]
 
 __all__ = ['QueryOptimizer', 'CostEstimator']

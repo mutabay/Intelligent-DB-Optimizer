@@ -17,7 +17,7 @@ from src.agents.dqn_agent import MultiAgentDQN
 from src.agents.rl_environment import QueryOptimizationEnv
 from src.database_environment.db_simulator import DatabaseSimulator
 from src.knowledge_graph.schema_ontology import DatabaseSchemaKG
-from evaluation.baselines.rule_based_optimizer import RuleBasedOptimizer
+from src.optimization.rule_based_optimizer import RuleBasedOptimizer
 from src.utils.logging import logger
 
 

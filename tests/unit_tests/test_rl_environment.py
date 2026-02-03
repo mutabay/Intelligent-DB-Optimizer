@@ -209,10 +209,16 @@ class TestRLEnvironment:
             results.append((state, reward, done))
         
         # Check consistency in structure
+        performance_values = []
         for state, reward, done in results:
             assert isinstance(reward, (int, float))
             assert isinstance(done, (bool, int, float))  # Can be bool or numeric
-            results.append((state, reward, info['performance']))
+        
+        # Extract performance values for additional checks
+        for episode in range(3):
+            reset_result = env.reset()
+            next_state, reward, done, truncated, info = env.step(same_actions)
+            performance_values.append(info['performance'])
         
         # States should be similar for same query
         states = [r[0] for r in results]

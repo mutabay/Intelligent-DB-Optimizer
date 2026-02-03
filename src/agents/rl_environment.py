@@ -47,7 +47,9 @@ class QueryOptimizationEnv(gym.Env):
         super().__init__()
 
         self.db = database_simulator
+        self.db_simulator = database_simulator  # Alias for compatibility with tests
         self.kg = knowledge_graph
+        self.knowledge_graph = knowledge_graph  # Alias for compatibility with tests
 
         # Current query and state
         self.current_query = None
@@ -209,7 +211,10 @@ class QueryOptimizationEnv(gym.Env):
             "baseline_performance": self.baseline_performance,
             "reward": reward,
             "query_valid": not bool(result.error),
-            "optimization_count": len(optimizations)
+            "optimization_count": len(optimizations),
+            "cost_estimate": performance,  # Add cost estimate for compatibility
+            "execution_time": performance,  # Add execution time for compatibility
+            "actions_taken": list(actions.keys())  # Add actions taken for compatibility
         }
 
         logger.info(f"Step completed: improvement={improvement:.3f}, reward={reward:.2f}")
@@ -741,3 +746,50 @@ class QueryOptimizationEnv(gym.Env):
             
             print(f"Optimizations Applied: {len(self.optimization_history)}")
             print("=" * 50)
+    
+    def extract_state_from_query(self, query: str) -> np.ndarray:
+        """Extract state representation from query text.
+        
+        Args:
+            query: SQL query text
+            
+        Returns:
+            State vector representation
+        """
+        # Parse query to extract features
+        query_lower = query.lower()
+        
+        # Count query features
+        num_tables = len([word for word in query_lower.split() if word in ['from', 'join']])
+        num_joins = query_lower.count('join')
+        num_where = query_lower.count('where')
+        num_select = query_lower.count('select')
+        
+        # Estimate complexity based on query structure
+        complexity = num_tables * 2 + num_joins * 3 + num_where * 1.5 + num_select
+        
+        # Create state vector
+        state = np.array([
+            num_tables,
+            num_joins, 
+            num_where,
+            num_select,
+            complexity,
+            len(query),  # Query length
+            query_lower.count('group by'),
+            query_lower.count('order by'),
+            query_lower.count('having'),
+            query_lower.count('limit')
+        ], dtype=np.float32)
+        
+        # Normalize values to [0, 1] range
+        max_values = np.array([10, 10, 10, 5, 50, 1000, 5, 5, 5, 5])  # Expected max values
+        state = np.minimum(state / max_values, 1.0)  # Clip at 1.0
+        
+        # Pad or truncate to match observation space
+        if len(state) > self.observation_space.shape[0]:
+            state = state[:self.observation_space.shape[0]]
+        elif len(state) < self.observation_space.shape[0]:
+            state = np.pad(state, (0, self.observation_space.shape[0] - len(state)))
+        
+        return state

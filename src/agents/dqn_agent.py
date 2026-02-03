@@ -152,12 +152,26 @@ class MultiAgentDQN:
         
         logger.info("Multi-Agent DQN system ready")
 
-    def get_actions(self, state):
-        """Get actions from all agents for given state."""
+    def get_actions(self, state, deterministic=False):
+        """Get actions from all agents for given state as dictionary."""
         agent_actions = {}
         for agent_name, agent in self.agents.items():
-            agent_actions[agent_name] = agent.act(state)
+            if hasattr(agent, 'act'):
+                if deterministic and hasattr(agent, 'predict'):
+                    agent_actions[agent_name] = agent.predict(state)
+                else:
+                    agent_actions[agent_name] = agent.act(state)
+            else:
+                agent_actions[agent_name] = 0  # Default action
         return agent_actions
+    
+    def get_actions_list(self, state, deterministic=False):
+        """Get actions from all agents for given state as list (for integration tests)."""
+        agent_actions = self.get_actions(state, deterministic)
+        
+        # Return as list for testing compatibility
+        action_order = ['join_ordering', 'index_advisor', 'cache_manager', 'resource_allocator']
+        return [int(agent_actions.get(name, 0)) for name in action_order]
 
     def store_experience(self, state, actions, reward, next_state, done):
         """Store experience for all agents"""

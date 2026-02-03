@@ -1,14 +1,14 @@
 """
 Test the baseline rule-based optimizer.
 """
+import pytest
 import sys
 import os
 sys.path.append('src')
-sys.path.append('evaluation')
 
 from src.database_environment.db_simulator import DatabaseSimulator
 from src.knowledge_graph.schema_ontology import DatabaseSchemaKG
-from evaluation.baselines.rule_based_optimizer import RuleBasedOptimizer, BaselineEvaluator
+from src.optimization.rule_based_optimizer import RuleBasedOptimizer, BaselineEvaluator
 from src.utils.logging import logger
 
 def test_baseline_optimizer():
@@ -50,7 +50,7 @@ def test_baseline_optimizer():
             result = db.execute_query(query)
             if result.error:
                 logger.error(f"Failed to insert data: {result.error}")
-                return False
+                pytest.fail(f"Failed to insert data: {result.error}")
         
         logger.info(f"Inserted test data: 50 customers, 100 orders, 200 lineitems")
         
@@ -115,11 +115,10 @@ def test_baseline_optimizer():
         assert "avg_original_time" in metrics, "Should have average original time"
         
         logger.info("Baseline optimizer test completed successfully")
-        return True
         
     except Exception as e:
         logger.error(f"Baseline optimizer test failed: {e}")
-        return False
+        pytest.fail(f"Baseline optimizer test failed: {e}")
         
     finally:
         # Clean up

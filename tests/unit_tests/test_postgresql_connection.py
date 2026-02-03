@@ -46,14 +46,13 @@ def test_postgresql_connection():
             result = db.execute_query(query)
             if result.error:
                 logger.error(f"Test query failed: {result.error}")
-                return False
+                pytest.fail(f"Test query failed: {result.error}")
         
         logger.info("All PostgreSQL tests passed")
-        return True
         
     except Exception as e:
         logger.error(f"PostgreSQL test failed: {e}")
-        return False
+        pytest.fail(f"PostgreSQL test failed: {e}")
         
     finally:
         db.disconnect()

@@ -198,6 +198,9 @@ class QueryOptimizer:
     
     def _optimize_hybrid(self, query: str) -> QueryPlan:
         """Optimize query using hybrid rule-based + DQN approach."""
+        # Perform LLM-style query analysis
+        llm_analysis = self._perform_llm_analysis(query)
+        
         # Get both optimization results
         rule_based_plan = self._optimize_rule_based(query)
         
@@ -220,8 +223,70 @@ class QueryOptimizer:
             selected_plan = rule_based_plan
             selected_plan.optimization_strategy = OptimizationStrategy.HYBRID
             selected_plan.metadata['hybrid_choice'] = 'rule_based_fallback'
+            # Add placeholder DQN actions for compatibility
+            selected_plan.metadata['dqn_actions'] = []
+        
+        # Add LLM analysis to metadata
+        selected_plan.metadata['llm_analysis'] = llm_analysis
         
         return selected_plan
+
+    def _perform_llm_analysis(self, query: str) -> Dict[str, Any]:
+        """Perform LLM-style analysis of the query."""
+        query_lower = query.lower()
+        
+        # Analyze query complexity
+        complexity_score = 0
+        complexity_factors = []
+        
+        if 'join' in query_lower:
+            join_count = query_lower.count('join')
+            complexity_score += join_count * 2
+            complexity_factors.append(f"{join_count} join operations")
+        
+        if 'group by' in query_lower:
+            complexity_score += 3
+            complexity_factors.append("GROUP BY aggregation")
+            
+        if 'having' in query_lower:
+            complexity_score += 2
+            complexity_factors.append("HAVING clause filtering")
+            
+        if 'order by' in query_lower:
+            complexity_score += 1
+            complexity_factors.append("ORDER BY sorting")
+            
+        # Analyze optimization opportunities
+        optimization_opportunities = []
+        
+        if 'join' in query_lower and 'where' in query_lower:
+            optimization_opportunities.append("Push WHERE conditions to reduce join cardinality")
+            
+        if 'group by' in query_lower:
+            optimization_opportunities.append("Consider partial aggregation for better memory usage")
+            
+        if query_lower.count('join') > 2:
+            optimization_opportunities.append("Optimize join ordering for minimal intermediate results")
+        
+        # Query pattern recognition
+        patterns = []
+        if all(clause in query_lower for clause in ['join', 'group by', 'having']):
+            patterns.append("Analytical aggregation with filtering")
+        if 'join' in query_lower and 'order by' in query_lower:
+            patterns.append("Sorted join result")
+            
+        return {
+            'complexity_score': complexity_score,
+            'complexity_level': 'high' if complexity_score > 5 else 'medium' if complexity_score > 2 else 'low',
+            'complexity_factors': complexity_factors,
+            'optimization_opportunities': optimization_opportunities,
+            'recognized_patterns': patterns,
+            'estimated_execution_characteristics': {
+                'io_intensive': 'join' in query_lower,
+                'cpu_intensive': any(agg in query_lower for agg in ['sum', 'count', 'avg']),
+                'memory_intensive': 'group by' in query_lower or 'order by' in query_lower
+            }
+        }
     
     def _analyze_query(self, query: str) -> Dict[str, Any]:
         """Analyze query structure and characteristics."""

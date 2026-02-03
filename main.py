@@ -26,7 +26,7 @@ from src.agents.dqn_trainer import DQNTrainer
 from src.agents.dqn_evaluator import DQNEvaluator, QueryBenchmark
 from src.optimization.query_optimizer import QueryOptimizer, OptimizationStrategy
 from src.optimization.cost_estimator import CostEstimator
-from evaluation.baselines.rule_based_optimizer import RuleBasedOptimizer
+from src.optimization.rule_based_optimizer import RuleBasedOptimizer
 from src.utils.logging import logger
 
 
@@ -89,7 +89,7 @@ class IntelligentDBOptimizer:
             # 3. Initialize RL environment
             logger.info("🎮 Setting up RL environment")
             self.rl_environment = QueryOptimizationEnv(
-                db_simulator=self.db_simulator,
+                database_simulator=self.db_simulator,
                 knowledge_graph=self.knowledge_graph
             )
             
@@ -228,15 +228,28 @@ class IntelligentDBOptimizer:
         # Get cost breakdown
         cost_breakdown = self.cost_estimator.get_cost_breakdown(query_plan.execution_plan)
         
-        return {
+        # Build result dictionary
+        result = {
             'original_query': query,
             'optimization_strategy': strategy,
             'execution_plan': query_plan.execution_plan,
+            'optimization_plan': query_plan.execution_plan,  # Alias for compatibility
             'estimated_cost': query_plan.estimated_cost,
             'optimization_time': query_plan.optimization_time,
+            'execution_time': query_plan.optimization_time,  # Alias for compatibility
             'cost_breakdown': cost_breakdown,
             'metadata': query_plan.metadata
         }
+        
+        # For hybrid strategy, include LLM analysis at top level
+        if strategy == "hybrid" and 'llm_analysis' in query_plan.metadata:
+            result['llm_analysis'] = query_plan.metadata['llm_analysis']
+        
+        # For DQN and hybrid strategies, include DQN actions if available
+        if strategy in ["dqn_based", "hybrid"] and 'dqn_actions' in query_plan.metadata:
+            result['dqn_actions'] = query_plan.metadata['dqn_actions']
+        
+        return result
     
     def evaluate_system(self, num_trials: int = 5) -> Dict[str, Any]:
         """
