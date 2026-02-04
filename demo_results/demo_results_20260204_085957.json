@@ -1,0 +1,939 @@
+{
+  "demonstration_timestamp": "2026-02-04T08:59:57.030935",
+  "system_status": "operational",
+  "demo_version": "2.0",
+  "components_tested": [
+    "knowledge_graph",
+    "query_optimization",
+    "knowledge_graph_insights"
+  ],
+  "knowledge_graph_analysis": {
+    "tables": 3,
+    "relationships": 2,
+    "suggested_join_order": [
+      "customers",
+      "orders",
+      "lineitem"
+    ]
+  },
+  "optimization_examples": [
+    {
+      "query_info": {
+        "name": "Simple Selection Query",
+        "complexity": "Low",
+        "description": "Basic filtering with WHERE clause",
+        "query": "SELECT * FROM customers WHERE nation_key = 1"
+      },
+      "strategy_results": {
+        "rule_based": {
+          "original_query": "SELECT * FROM customers WHERE nation_key = 1",
+          "optimization_strategy": "rule_based",
+          "execution_plan": {
+            "join_order": [
+              "customers"
+            ],
+            "index_usage": [],
+            "scan_method": "sequential_scan"
+          },
+          "optimization_plan": {
+            "join_order": [
+              "customers"
+            ],
+            "index_usage": [],
+            "scan_method": "sequential_scan"
+          },
+          "estimated_cost": 1000,
+          "optimization_time": 0.0,
+          "execution_time": 0.0,
+          "cost_breakdown": {
+            "total_cost": 0,
+            "total_cpu_cost": 0,
+            "total_io_cost": 0,
+            "total_memory_cost": 0,
+            "cost_by_operation_type": {},
+            "operation_details": []
+          },
+          "metadata": {
+            "query_analysis": {
+              "query_type": "SELECT",
+              "has_joins": false,
+              "has_subqueries": false,
+              "has_aggregations": false,
+              "has_group_by": false,
+              "has_order_by": false,
+              "estimated_selectivity": 0.5,
+              "table_count": 1,
+              "tables": [
+                "customers"
+              ],
+              "complexity_score": 1
+            },
+            "rule_applications": 3
+          }
+        },
+        "dqn_based": {
+          "original_query": "SELECT * FROM customers WHERE nation_key = 1",
+          "optimization_strategy": "dqn_based",
+          "execution_plan": {
+            "join_order": [
+              "customers"
+            ],
+            "index_usage": [],
+            "scan_method": "sequential_scan"
+          },
+          "optimization_plan": {
+            "join_order": [
+              "customers"
+            ],
+            "index_usage": [],
+            "scan_method": "sequential_scan"
+          },
+          "estimated_cost": 1000,
+          "optimization_time": 0.0,
+          "execution_time": 0.0,
+          "cost_breakdown": {
+            "total_cost": 0,
+            "total_cpu_cost": 0,
+            "total_io_cost": 0,
+            "total_memory_cost": 0,
+            "cost_by_operation_type": {},
+            "operation_details": []
+          },
+          "metadata": {
+            "query_analysis": {
+              "query_type": "SELECT",
+              "has_joins": false,
+              "has_subqueries": false,
+              "has_aggregations": false,
+              "has_group_by": false,
+              "has_order_by": false,
+              "estimated_selectivity": 0.5,
+              "table_count": 1,
+              "tables": [
+                "customers"
+              ],
+              "complexity_score": 1
+            },
+            "rule_applications": 3
+          }
+        },
+        "hybrid": {
+          "original_query": "SELECT * FROM customers WHERE nation_key = 1",
+          "optimization_strategy": "hybrid",
+          "execution_plan": {
+            "join_order": [
+              "customers"
+            ],
+            "index_usage": [],
+            "scan_method": "sequential_scan"
+          },
+          "optimization_plan": {
+            "join_order": [
+              "customers"
+            ],
+            "index_usage": [],
+            "scan_method": "sequential_scan"
+          },
+          "estimated_cost": 1000,
+          "optimization_time": 0.0,
+          "execution_time": 0.0,
+          "cost_breakdown": {
+            "total_cost": 0,
+            "total_cpu_cost": 0,
+            "total_io_cost": 0,
+            "total_memory_cost": 0,
+            "cost_by_operation_type": {},
+            "operation_details": []
+          },
+          "metadata": {
+            "query_analysis": {
+              "query_type": "SELECT",
+              "has_joins": false,
+              "has_subqueries": false,
+              "has_aggregations": false,
+              "has_group_by": false,
+              "has_order_by": false,
+              "estimated_selectivity": 0.5,
+              "table_count": 1,
+              "tables": [
+                "customers"
+              ],
+              "complexity_score": 1
+            },
+            "rule_applications": 3,
+            "hybrid_choice": "rule_based_fallback",
+            "dqn_actions": [],
+            "llm_analysis": {
+              "complexity_score": 0,
+              "complexity_level": "low",
+              "complexity_factors": [],
+              "optimization_opportunities": [],
+              "recognized_patterns": [],
+              "estimated_execution_characteristics": {
+                "io_intensive": false,
+                "cpu_intensive": false,
+                "memory_intensive": false
+              }
+            }
+          },
+          "llm_analysis": {
+            "complexity_score": 0,
+            "complexity_level": "low",
+            "complexity_factors": [],
+            "optimization_opportunities": [],
+            "recognized_patterns": [],
+            "estimated_execution_characteristics": {
+              "io_intensive": false,
+              "cpu_intensive": false,
+              "memory_intensive": false
+            }
+          },
+          "dqn_actions": []
+        }
+      }
+    },
+    {
+      "query_info": {
+        "name": "Two-Table Join Query",
+        "complexity": "Medium",
+        "description": "Inner join between customers and orders",
+        "query": "\n                SELECT c.name, o.order_date, o.total_price\n                FROM customers c\n                JOIN orders o ON c.customer_key = o.customer_key\n                WHERE c.nation_key IN (1, 2, 3)\n                ORDER BY o.total_price DESC\n                LIMIT 100\n                "
+      },
+      "strategy_results": {
+        "rule_based": {
+          "original_query": "\n                SELECT c.name, o.order_date, o.total_price\n                FROM customers c\n                JOIN orders o ON c.customer_key = o.customer_key\n                WHERE c.nation_key IN (1, 2, 3)\n                ORDER BY o.total_price DESC\n                LIMIT 100\n                ",
+          "optimization_strategy": "rule_based",
+          "execution_plan": {
+            "join_order": [
+              "customers",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "optimization_plan": {
+            "join_order": [
+              "customers",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "estimated_cost": 4200,
+          "optimization_time": 0.0,
+          "execution_time": 0.0,
+          "cost_breakdown": {
+            "total_cost": 0,
+            "total_cpu_cost": 0,
+            "total_io_cost": 0,
+            "total_memory_cost": 0,
+            "cost_by_operation_type": {},
+            "operation_details": []
+          },
+          "metadata": {
+            "query_analysis": {
+              "query_type": "SELECT",
+              "has_joins": true,
+              "has_subqueries": false,
+              "has_aggregations": false,
+              "has_group_by": false,
+              "has_order_by": true,
+              "estimated_selectivity": 0.5,
+              "table_count": 2,
+              "tables": [
+                "customers",
+                "orders"
+              ],
+              "complexity_score": 4
+            },
+            "rule_applications": 3
+          }
+        },
+        "dqn_based": {
+          "original_query": "\n                SELECT c.name, o.order_date, o.total_price\n                FROM customers c\n                JOIN orders o ON c.customer_key = o.customer_key\n                WHERE c.nation_key IN (1, 2, 3)\n                ORDER BY o.total_price DESC\n                LIMIT 100\n                ",
+          "optimization_strategy": "dqn_based",
+          "execution_plan": {
+            "join_order": [
+              "customers",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "optimization_plan": {
+            "join_order": [
+              "customers",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "estimated_cost": 4200,
+          "optimization_time": 0.0009996891021728516,
+          "execution_time": 0.0009996891021728516,
+          "cost_breakdown": {
+            "total_cost": 0,
+            "total_cpu_cost": 0,
+            "total_io_cost": 0,
+            "total_memory_cost": 0,
+            "cost_by_operation_type": {},
+            "operation_details": []
+          },
+          "metadata": {
+            "query_analysis": {
+              "query_type": "SELECT",
+              "has_joins": true,
+              "has_subqueries": false,
+              "has_aggregations": false,
+              "has_group_by": false,
+              "has_order_by": true,
+              "estimated_selectivity": 0.5,
+              "table_count": 2,
+              "tables": [
+                "customers",
+                "orders"
+              ],
+              "complexity_score": 4
+            },
+            "rule_applications": 3
+          }
+        },
+        "hybrid": {
+          "original_query": "\n                SELECT c.name, o.order_date, o.total_price\n                FROM customers c\n                JOIN orders o ON c.customer_key = o.customer_key\n                WHERE c.nation_key IN (1, 2, 3)\n                ORDER BY o.total_price DESC\n                LIMIT 100\n                ",
+          "optimization_strategy": "hybrid",
+          "execution_plan": {
+            "join_order": [
+              "customers",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "optimization_plan": {
+            "join_order": [
+              "customers",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "estimated_cost": 4200,
+          "optimization_time": 0.0010006427764892578,
+          "execution_time": 0.0010006427764892578,
+          "cost_breakdown": {
+            "total_cost": 0,
+            "total_cpu_cost": 0,
+            "total_io_cost": 0,
+            "total_memory_cost": 0,
+            "cost_by_operation_type": {},
+            "operation_details": []
+          },
+          "metadata": {
+            "query_analysis": {
+              "query_type": "SELECT",
+              "has_joins": true,
+              "has_subqueries": false,
+              "has_aggregations": false,
+              "has_group_by": false,
+              "has_order_by": true,
+              "estimated_selectivity": 0.5,
+              "table_count": 2,
+              "tables": [
+                "customers",
+                "orders"
+              ],
+              "complexity_score": 4
+            },
+            "rule_applications": 3,
+            "hybrid_choice": "rule_based_fallback",
+            "dqn_actions": [],
+            "llm_analysis": {
+              "complexity_score": 3,
+              "complexity_level": "medium",
+              "complexity_factors": [
+                "1 join operations",
+                "ORDER BY sorting"
+              ],
+              "optimization_opportunities": [
+                "Push WHERE conditions to reduce join cardinality"
+              ],
+              "recognized_patterns": [
+                "Sorted join result"
+              ],
+              "estimated_execution_characteristics": {
+                "io_intensive": true,
+                "cpu_intensive": false,
+                "memory_intensive": true
+              }
+            }
+          },
+          "llm_analysis": {
+            "complexity_score": 3,
+            "complexity_level": "medium",
+            "complexity_factors": [
+              "1 join operations",
+              "ORDER BY sorting"
+            ],
+            "optimization_opportunities": [
+              "Push WHERE conditions to reduce join cardinality"
+            ],
+            "recognized_patterns": [
+              "Sorted join result"
+            ],
+            "estimated_execution_characteristics": {
+              "io_intensive": true,
+              "cpu_intensive": false,
+              "memory_intensive": true
+            }
+          },
+          "dqn_actions": []
+        }
+      }
+    },
+    {
+      "query_info": {
+        "name": "Complex Aggregation Query",
+        "complexity": "High",
+        "description": "Multi-table joins with grouping and aggregation",
+        "query": "\n                SELECT c.name, COUNT(o.order_key) as order_count,\n                       SUM(l.extended_price) as total_revenue,\n                       AVG(l.extended_price) as avg_line_value\n                FROM customers c\n                JOIN orders o ON c.customer_key = o.customer_key\n                JOIN lineitem l ON o.order_key = l.order_key\n                WHERE c.nation_key IN (1, 2, 3)\n                  AND o.order_date > '1995-01-01'\n                GROUP BY c.customer_key, c.name\n                HAVING SUM(l.extended_price) > 1000\n                ORDER BY total_revenue DESC\n                "
+      },
+      "strategy_results": {
+        "rule_based": {
+          "original_query": "\n                SELECT c.name, COUNT(o.order_key) as order_count,\n                       SUM(l.extended_price) as total_revenue,\n                       AVG(l.extended_price) as avg_line_value\n                FROM customers c\n                JOIN orders o ON c.customer_key = o.customer_key\n                JOIN lineitem l ON o.order_key = l.order_key\n                WHERE c.nation_key IN (1, 2, 3)\n                  AND o.order_date > '1995-01-01'\n                GROUP BY c.customer_key, c.name\n                HAVING SUM(l.extended_price) > 1000\n                ORDER BY total_revenue DESC\n                ",
+          "optimization_strategy": "rule_based",
+          "execution_plan": {
+            "join_order": [
+              "customers",
+              "lineitem",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_aggregation_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "optimization_plan": {
+            "join_order": [
+              "customers",
+              "lineitem",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_aggregation_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "estimated_cost": 6300,
+          "optimization_time": 0.0,
+          "execution_time": 0.0,
+          "cost_breakdown": {
+            "total_cost": 0,
+            "total_cpu_cost": 0,
+            "total_io_cost": 0,
+            "total_memory_cost": 0,
+            "cost_by_operation_type": {},
+            "operation_details": []
+          },
+          "metadata": {
+            "query_analysis": {
+              "query_type": "SELECT",
+              "has_joins": true,
+              "has_subqueries": false,
+              "has_aggregations": true,
+              "has_group_by": true,
+              "has_order_by": true,
+              "estimated_selectivity": 0.5,
+              "table_count": 3,
+              "tables": [
+                "customers",
+                "orders",
+                "lineitem"
+              ],
+              "complexity_score": 6
+            },
+            "rule_applications": 3
+          }
+        },
+        "dqn_based": {
+          "original_query": "\n                SELECT c.name, COUNT(o.order_key) as order_count,\n                       SUM(l.extended_price) as total_revenue,\n                       AVG(l.extended_price) as avg_line_value\n                FROM customers c\n                JOIN orders o ON c.customer_key = o.customer_key\n                JOIN lineitem l ON o.order_key = l.order_key\n                WHERE c.nation_key IN (1, 2, 3)\n                  AND o.order_date > '1995-01-01'\n                GROUP BY c.customer_key, c.name\n                HAVING SUM(l.extended_price) > 1000\n                ORDER BY total_revenue DESC\n                ",
+          "optimization_strategy": "dqn_based",
+          "execution_plan": {
+            "join_order": [
+              "customers",
+              "lineitem",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_aggregation_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "optimization_plan": {
+            "join_order": [
+              "customers",
+              "lineitem",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_aggregation_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "estimated_cost": 6300,
+          "optimization_time": 0.0,
+          "execution_time": 0.0,
+          "cost_breakdown": {
+            "total_cost": 0,
+            "total_cpu_cost": 0,
+            "total_io_cost": 0,
+            "total_memory_cost": 0,
+            "cost_by_operation_type": {},
+            "operation_details": []
+          },
+          "metadata": {
+            "query_analysis": {
+              "query_type": "SELECT",
+              "has_joins": true,
+              "has_subqueries": false,
+              "has_aggregations": true,
+              "has_group_by": true,
+              "has_order_by": true,
+              "estimated_selectivity": 0.5,
+              "table_count": 3,
+              "tables": [
+                "customers",
+                "orders",
+                "lineitem"
+              ],
+              "complexity_score": 6
+            },
+            "rule_applications": 3
+          }
+        },
+        "hybrid": {
+          "original_query": "\n                SELECT c.name, COUNT(o.order_key) as order_count,\n                       SUM(l.extended_price) as total_revenue,\n                       AVG(l.extended_price) as avg_line_value\n                FROM customers c\n                JOIN orders o ON c.customer_key = o.customer_key\n                JOIN lineitem l ON o.order_key = l.order_key\n                WHERE c.nation_key IN (1, 2, 3)\n                  AND o.order_date > '1995-01-01'\n                GROUP BY c.customer_key, c.name\n                HAVING SUM(l.extended_price) > 1000\n                ORDER BY total_revenue DESC\n                ",
+          "optimization_strategy": "hybrid",
+          "execution_plan": {
+            "join_order": [
+              "customers",
+              "lineitem",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_aggregation_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "optimization_plan": {
+            "join_order": [
+              "customers",
+              "lineitem",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_aggregation_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "estimated_cost": 6300,
+          "optimization_time": 0.0005519390106201172,
+          "execution_time": 0.0005519390106201172,
+          "cost_breakdown": {
+            "total_cost": 0,
+            "total_cpu_cost": 0,
+            "total_io_cost": 0,
+            "total_memory_cost": 0,
+            "cost_by_operation_type": {},
+            "operation_details": []
+          },
+          "metadata": {
+            "query_analysis": {
+              "query_type": "SELECT",
+              "has_joins": true,
+              "has_subqueries": false,
+              "has_aggregations": true,
+              "has_group_by": true,
+              "has_order_by": true,
+              "estimated_selectivity": 0.5,
+              "table_count": 3,
+              "tables": [
+                "customers",
+                "orders",
+                "lineitem"
+              ],
+              "complexity_score": 6
+            },
+            "rule_applications": 3,
+            "hybrid_choice": "rule_based_fallback",
+            "dqn_actions": [],
+            "llm_analysis": {
+              "complexity_score": 10,
+              "complexity_level": "high",
+              "complexity_factors": [
+                "2 join operations",
+                "GROUP BY aggregation",
+                "HAVING clause filtering",
+                "ORDER BY sorting"
+              ],
+              "optimization_opportunities": [
+                "Push WHERE conditions to reduce join cardinality",
+                "Consider partial aggregation for better memory usage"
+              ],
+              "recognized_patterns": [
+                "Analytical aggregation with filtering",
+                "Sorted join result"
+              ],
+              "estimated_execution_characteristics": {
+                "io_intensive": true,
+                "cpu_intensive": true,
+                "memory_intensive": true
+              }
+            }
+          },
+          "llm_analysis": {
+            "complexity_score": 10,
+            "complexity_level": "high",
+            "complexity_factors": [
+              "2 join operations",
+              "GROUP BY aggregation",
+              "HAVING clause filtering",
+              "ORDER BY sorting"
+            ],
+            "optimization_opportunities": [
+              "Push WHERE conditions to reduce join cardinality",
+              "Consider partial aggregation for better memory usage"
+            ],
+            "recognized_patterns": [
+              "Analytical aggregation with filtering",
+              "Sorted join result"
+            ],
+            "estimated_execution_characteristics": {
+              "io_intensive": true,
+              "cpu_intensive": true,
+              "memory_intensive": true
+            }
+          },
+          "dqn_actions": []
+        }
+      }
+    },
+    {
+      "query_info": {
+        "name": "Performance-Critical Query",
+        "complexity": "Very High",
+        "description": "Complex analytical query with subqueries",
+        "query": "\n                SELECT c.name, recent_orders.order_count, recent_orders.total_spent\n                FROM customers c\n                JOIN (\n                    SELECT customer_key, COUNT(*) as order_count, SUM(total_price) as total_spent\n                    FROM orders\n                    WHERE order_date >= '2023-01-01'\n                    GROUP BY customer_key\n                    HAVING COUNT(*) > 5\n                ) recent_orders ON c.customer_key = recent_orders.customer_key\n                WHERE c.nation_key IN (1, 2, 3, 4, 5)\n                ORDER BY recent_orders.total_spent DESC\n                "
+      },
+      "strategy_results": {
+        "rule_based": {
+          "original_query": "\n                SELECT c.name, recent_orders.order_count, recent_orders.total_spent\n                FROM customers c\n                JOIN (\n                    SELECT customer_key, COUNT(*) as order_count, SUM(total_price) as total_spent\n                    FROM orders\n                    WHERE order_date >= '2023-01-01'\n                    GROUP BY customer_key\n                    HAVING COUNT(*) > 5\n                ) recent_orders ON c.customer_key = recent_orders.customer_key\n                WHERE c.nation_key IN (1, 2, 3, 4, 5)\n                ORDER BY recent_orders.total_spent DESC\n                ",
+          "optimization_strategy": "rule_based",
+          "execution_plan": {
+            "join_order": [
+              "customers",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_aggregation_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "optimization_plan": {
+            "join_order": [
+              "customers",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_aggregation_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "estimated_cost": 6300,
+          "optimization_time": 0.0,
+          "execution_time": 0.0,
+          "cost_breakdown": {
+            "total_cost": 0,
+            "total_cpu_cost": 0,
+            "total_io_cost": 0,
+            "total_memory_cost": 0,
+            "cost_by_operation_type": {},
+            "operation_details": []
+          },
+          "metadata": {
+            "query_analysis": {
+              "query_type": "SELECT",
+              "has_joins": true,
+              "has_subqueries": true,
+              "has_aggregations": true,
+              "has_group_by": true,
+              "has_order_by": true,
+              "estimated_selectivity": 0.5,
+              "table_count": 3,
+              "tables": [
+                "customers",
+                "orders"
+              ],
+              "complexity_score": 6
+            },
+            "rule_applications": 3
+          }
+        },
+        "dqn_based": {
+          "original_query": "\n                SELECT c.name, recent_orders.order_count, recent_orders.total_spent\n                FROM customers c\n                JOIN (\n                    SELECT customer_key, COUNT(*) as order_count, SUM(total_price) as total_spent\n                    FROM orders\n                    WHERE order_date >= '2023-01-01'\n                    GROUP BY customer_key\n                    HAVING COUNT(*) > 5\n                ) recent_orders ON c.customer_key = recent_orders.customer_key\n                WHERE c.nation_key IN (1, 2, 3, 4, 5)\n                ORDER BY recent_orders.total_spent DESC\n                ",
+          "optimization_strategy": "dqn_based",
+          "execution_plan": {
+            "join_order": [
+              "customers",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_aggregation_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "optimization_plan": {
+            "join_order": [
+              "customers",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_aggregation_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "estimated_cost": 6300,
+          "optimization_time": 0.0009970664978027344,
+          "execution_time": 0.0009970664978027344,
+          "cost_breakdown": {
+            "total_cost": 0,
+            "total_cpu_cost": 0,
+            "total_io_cost": 0,
+            "total_memory_cost": 0,
+            "cost_by_operation_type": {},
+            "operation_details": []
+          },
+          "metadata": {
+            "query_analysis": {
+              "query_type": "SELECT",
+              "has_joins": true,
+              "has_subqueries": true,
+              "has_aggregations": true,
+              "has_group_by": true,
+              "has_order_by": true,
+              "estimated_selectivity": 0.5,
+              "table_count": 3,
+              "tables": [
+                "customers",
+                "orders"
+              ],
+              "complexity_score": 6
+            },
+            "rule_applications": 3
+          }
+        },
+        "hybrid": {
+          "original_query": "\n                SELECT c.name, recent_orders.order_count, recent_orders.total_spent\n                FROM customers c\n                JOIN (\n                    SELECT customer_key, COUNT(*) as order_count, SUM(total_price) as total_spent\n                    FROM orders\n                    WHERE order_date >= '2023-01-01'\n                    GROUP BY customer_key\n                    HAVING COUNT(*) > 5\n                ) recent_orders ON c.customer_key = recent_orders.customer_key\n                WHERE c.nation_key IN (1, 2, 3, 4, 5)\n                ORDER BY recent_orders.total_spent DESC\n                ",
+          "optimization_strategy": "hybrid",
+          "execution_plan": {
+            "join_order": [
+              "customers",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_aggregation_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "optimization_plan": {
+            "join_order": [
+              "customers",
+              "orders"
+            ],
+            "index_usage": [
+              "create_join_indexes",
+              "create_aggregation_indexes",
+              "create_sort_indexes"
+            ],
+            "scan_method": "sequential_scan"
+          },
+          "estimated_cost": 6300,
+          "optimization_time": 0.0009980201721191406,
+          "execution_time": 0.0009980201721191406,
+          "cost_breakdown": {
+            "total_cost": 0,
+            "total_cpu_cost": 0,
+            "total_io_cost": 0,
+            "total_memory_cost": 0,
+            "cost_by_operation_type": {},
+            "operation_details": []
+          },
+          "metadata": {
+            "query_analysis": {
+              "query_type": "SELECT",
+              "has_joins": true,
+              "has_subqueries": true,
+              "has_aggregations": true,
+              "has_group_by": true,
+              "has_order_by": true,
+              "estimated_selectivity": 0.5,
+              "table_count": 3,
+              "tables": [
+                "customers",
+                "orders"
+              ],
+              "complexity_score": 6
+            },
+            "rule_applications": 3,
+            "hybrid_choice": "rule_based_fallback",
+            "dqn_actions": [],
+            "llm_analysis": {
+              "complexity_score": 8,
+              "complexity_level": "high",
+              "complexity_factors": [
+                "1 join operations",
+                "GROUP BY aggregation",
+                "HAVING clause filtering",
+                "ORDER BY sorting"
+              ],
+              "optimization_opportunities": [
+                "Push WHERE conditions to reduce join cardinality",
+                "Consider partial aggregation for better memory usage"
+              ],
+              "recognized_patterns": [
+                "Analytical aggregation with filtering",
+                "Sorted join result"
+              ],
+              "estimated_execution_characteristics": {
+                "io_intensive": true,
+                "cpu_intensive": true,
+                "memory_intensive": true
+              }
+            }
+          },
+          "llm_analysis": {
+            "complexity_score": 8,
+            "complexity_level": "high",
+            "complexity_factors": [
+              "1 join operations",
+              "GROUP BY aggregation",
+              "HAVING clause filtering",
+              "ORDER BY sorting"
+            ],
+            "optimization_opportunities": [
+              "Push WHERE conditions to reduce join cardinality",
+              "Consider partial aggregation for better memory usage"
+            ],
+            "recognized_patterns": [
+              "Analytical aggregation with filtering",
+              "Sorted join result"
+            ],
+            "estimated_execution_characteristics": {
+              "io_intensive": true,
+              "cpu_intensive": true,
+              "memory_intensive": true
+            }
+          },
+          "dqn_actions": []
+        }
+      }
+    }
+  ],
+  "performance_stats": {
+    "total_optimizations": 12,
+    "strategy_distribution": {
+      "rule_based": 4,
+      "dqn_based": 4,
+      "hybrid": 4
+    },
+    "average_cost": 4450.0,
+    "average_optimization_time": 0.0003789464632670085,
+    "latest_optimizations": [
+      {
+        "timestamp": 1770191997.0429327,
+        "query": "\n                SELECT c.name, COUNT(o.order_key) as order_count,\n                       SUM(l.extended_price) as total_revenue,\n                       AVG(l.extended_price) as avg_line_value\n                FROM customers c\n                JOIN orders o ON c.customer_key = o.customer_key\n                JOIN lineitem l ON o.order_key = l.order_key\n                WHERE c.nation_key IN (1, 2, 3)\n                  AND o.order_date > '1995-01-01'\n                GROUP BY c.customer_key, c.name\n                HAVING SUM(l.extended_price) > 1000\n                ORDER BY total_revenue DESC\n                ",
+        "strategy": "OptimizationStrategy.DQN_BASED",
+        "cost": 6300,
+        "optimization_time": 0.0
+      },
+      {
+        "timestamp": 1770191997.0444858,
+        "query": "\n                SELECT c.name, COUNT(o.order_key) as order_count,\n                       SUM(l.extended_price) as total_revenue,\n                       AVG(l.extended_price) as avg_line_value\n                FROM customers c\n                JOIN orders o ON c.customer_key = o.customer_key\n                JOIN lineitem l ON o.order_key = l.order_key\n                WHERE c.nation_key IN (1, 2, 3)\n                  AND o.order_date > '1995-01-01'\n                GROUP BY c.customer_key, c.name\n                HAVING SUM(l.extended_price) > 1000\n                ORDER BY total_revenue DESC\n                ",
+        "strategy": "OptimizationStrategy.HYBRID",
+        "cost": 6300,
+        "optimization_time": 0.0005519390106201172
+      },
+      {
+        "timestamp": 1770191997.0455656,
+        "query": "\n                SELECT c.name, recent_orders.order_count, recent_orders.total_spent\n                FROM customers c\n                JOIN (\n                    SELECT customer_key, COUNT(*) as order_count, SUM(total_price) as total_spent\n                    FROM orders\n                    WHERE order_date >= '2023-01-01'\n                    GROUP BY customer_key\n                    HAVING COUNT(*) > 5\n                ) recent_orders ON c.customer_key = recent_orders.customer_key\n                WHERE c.nation_key IN (1, 2, 3, 4, 5)\n                ORDER BY recent_orders.total_spent DESC\n                ",
+        "strategy": "OptimizationStrategy.RULE_BASED",
+        "cost": 6300,
+        "optimization_time": 0.0
+      },
+      {
+        "timestamp": 1770191997.0475764,
+        "query": "\n                SELECT c.name, recent_orders.order_count, recent_orders.total_spent\n                FROM customers c\n                JOIN (\n                    SELECT customer_key, COUNT(*) as order_count, SUM(total_price) as total_spent\n                    FROM orders\n                    WHERE order_date >= '2023-01-01'\n                    GROUP BY customer_key\n                    HAVING COUNT(*) > 5\n                ) recent_orders ON c.customer_key = recent_orders.customer_key\n                WHERE c.nation_key IN (1, 2, 3, 4, 5)\n                ORDER BY recent_orders.total_spent DESC\n                ",
+        "strategy": "OptimizationStrategy.DQN_BASED",
+        "cost": 6300,
+        "optimization_time": 0.0009970664978027344
+      },
+      {
+        "timestamp": 1770191997.0485744,
+        "query": "\n                SELECT c.name, recent_orders.order_count, recent_orders.total_spent\n                FROM customers c\n                JOIN (\n                    SELECT customer_key, COUNT(*) as order_count, SUM(total_price) as total_spent\n                    FROM orders\n                    WHERE order_date >= '2023-01-01'\n                    GROUP BY customer_key\n                    HAVING COUNT(*) > 5\n                ) recent_orders ON c.customer_key = recent_orders.customer_key\n                WHERE c.nation_key IN (1, 2, 3, 4, 5)\n                ORDER BY recent_orders.total_spent DESC\n                ",
+        "strategy": "OptimizationStrategy.HYBRID",
+        "cost": 6300,
+        "optimization_time": 0.0009980201721191406
+      }
+    ]
+  },
+  "component_status": {
+    "Database": "\u2705 Connected",
+    "Knowledge Graph": "\u2705 3 tables",
+    "DQN System": "\u2705 4 agents",
+    "Query Optimizer": "\u2705 Ready"
+  },
+  "optimization_hints": [
+    "Consider join order optimization for better performance",
+    "Ensure appropriate indexes exist on join columns",
+    "Consider creating indexes on WHERE clause columns"
+  ]
+}

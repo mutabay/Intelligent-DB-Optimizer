@@ -47,7 +47,8 @@ class QueryOptimizer:
     def __init__(self, 
                  db_simulator: DatabaseSimulator,
                  knowledge_graph: DatabaseSchemaKG,
-                 default_strategy: OptimizationStrategy = OptimizationStrategy.HYBRID):
+                 default_strategy: OptimizationStrategy = OptimizationStrategy.HYBRID,
+                 llm_agent=None):
         """
         Initialize the query optimizer.
         
@@ -55,10 +56,12 @@ class QueryOptimizer:
             db_simulator: Database simulator for execution
             knowledge_graph: Schema knowledge graph
             default_strategy: Default optimization strategy to use
+            llm_agent: LLM agent for semantic analysis (optional)
         """
         self.db_simulator = db_simulator
         self.knowledge_graph = knowledge_graph
         self.default_strategy = default_strategy
+        self.llm_agent = llm_agent
         
         # Initialize RL components
         self.rl_env = None

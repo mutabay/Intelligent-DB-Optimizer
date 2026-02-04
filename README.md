@@ -14,7 +14,7 @@ Traditional database optimizers rely on static rule-based heuristics that cannot
 The system has been designed to provide measurable performance improvements while maintaining explainability for production database environments.
 
 ## Architecture Overview
-
+![System Architecture](./assets/system_architecture.png)
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                         Hybrid AI Query Optimizer                           │
@@ -166,7 +166,110 @@ cd intelligent-db-optimizer
 pip install -r requirements.txt
 ```
 
-### Basic Usage
+## 🚀 Usage Guide & CLI Reference
+
+### Interactive Demo System
+
+The system provides multiple ways to interact with and explore the capabilities:
+
+#### 1. **Comprehensive Interactive Demo**
+```bash
+# Launch full interactive demonstration
+python main.py --interactive
+
+# Choose from 5 demo experiences:
+# 1. 🚀 Full Comprehensive Demo (Recommended)
+# 2. ⚡ Quick Query Optimization Demo  
+# 3. 🧠 Knowledge Graph Analysis Demo
+# 4. 📊 Strategy Comparison Demo
+# 5. 🔧 Custom Query Demo
+```
+
+#### 2. **Command Line Modes**
+
+**Full System Demonstration**
+```bash
+# Complete 6-phase demo with detailed analysis
+python main.py --mode demo
+
+# Save detailed results to JSON files
+python main.py --mode demo --save-results
+```
+
+**Query Optimization**
+```bash
+# Optimize single query with hybrid strategy
+python main.py --mode optimize \
+  --query "SELECT c.name, COUNT(o.order_key) FROM customers c JOIN orders o ON c.customer_key = o.customer_key GROUP BY c.name" \
+  --strategy hybrid
+
+# With verbose execution plan details
+python main.py --mode optimize \
+  --query "SELECT * FROM customers WHERE nation_key = 1" \
+  --strategy rule_based \
+  --verbose
+
+# Test all optimization strategies
+for strategy in rule_based dqn_based hybrid; do
+  python main.py --mode optimize --query "SELECT * FROM customers" --strategy $strategy
+done
+```
+
+**DQN Training**
+```bash
+# Train multi-agent DQN system
+python main.py --mode train --episodes 1000
+
+# Custom training with result saving
+python main.py --mode train --episodes 500 --save-results --verbose
+```
+
+**Performance Evaluation**
+```bash
+# Comprehensive system evaluation
+python main.py --mode evaluate --trials 10
+
+# Extended evaluation with detailed metrics
+python main.py --mode evaluate --trials 20 --save-results --verbose
+```
+
+### 📊 Demo Phases Overview
+
+When running the comprehensive demo, the system showcases:
+
+1. **📊 Knowledge Graph Analysis**
+   - Database schema exploration (3 tables, 2 relationships)
+   - Table statistics and relationship mapping
+   - Intelligent join order suggestions
+
+2. **⚡ Query Optimization Showcase**
+   - 4 complexity levels: Low → Very High
+   - Multi-strategy testing (rule-based, DQN-based, hybrid)
+   - Real-time cost estimation and timing analysis
+
+3. **📈 Strategy Comparison**
+   - Performance comparison table
+   - Best strategy identification
+   - Cost-benefit analysis
+
+4. **🔧 System Performance Analysis**
+   - Component status monitoring
+   - Optimization statistics
+   - Success rate tracking
+
+5. **🧠 Knowledge Graph Insights**
+   - LLM-style query analysis
+   - Optimization hints generation
+   - Actionable recommendations
+
+6. **📋 Demo Summary & Results**
+   - Comprehensive reporting
+   - Key takeaways
+   - Detailed metrics export
+
+### 💻 Programmatic Usage
+
+#### Basic System Usage
 ```python
 from main import IntelligentDBOptimizer
 
@@ -179,8 +282,47 @@ query = "SELECT c.name, COUNT(o.order_key) FROM customers c JOIN orders o ON c.c
 result = optimizer.optimize_query(query, strategy="hybrid")
 
 print(f"Estimated cost: {result['estimated_cost']}")
-print(f"Optimization plan: {result['optimization_plan']}")
-print(f"LLM explanation: {result['explanation']}")
+print(f"Optimization time: {result['optimization_time']*1000:.2f}ms")
+print(f"Execution plan: {result['execution_plan']}")
+
+# Access LLM analysis for hybrid strategy
+if 'llm_analysis' in result:
+    analysis = result['llm_analysis']
+    print(f"Query complexity: {analysis['complexity_level']}")
+    print(f"Optimization opportunities: {len(analysis['optimization_opportunities'])}")
+```
+
+#### Advanced Multi-Strategy Comparison
+```python
+# Compare all optimization strategies
+strategies = ['rule_based', 'dqn_based', 'hybrid']
+results = {}
+
+for strategy in strategies:
+    result = optimizer.optimize_query(query, strategy=strategy)
+    results[strategy] = {
+        'cost': result['estimated_cost'],
+        'time': result['optimization_time'],
+        'plan': result['execution_plan']
+    }
+
+# Find best performing strategy
+best_strategy = min(results.keys(), key=lambda k: results[k]['cost'])
+print(f"Best strategy: {best_strategy} (cost: {results[best_strategy]['cost']:.2f})")
+```
+
+#### Training and Evaluation Workflow
+```python
+# Train DQN system
+training_results = optimizer.train_dqn_system(num_episodes=1000)
+print(f"Training completed - Final reward: {training_results['average_final_reward']:.3f}")
+
+# Evaluate system performance
+evaluation_results = optimizer.evaluate_system(num_trials=5)
+print(f"Evaluation summary: {evaluation_results['summary_report']}")
+
+# Cleanup resources
+optimizer.cleanup()
 ```
 
 ## Performance Characteristics
@@ -264,27 +406,227 @@ The system has been architected for extensibility:
 
 **Summary**: This hybrid AI system demonstrates a practical approach to combining symbolic AI (LLMs) with statistical learning (DQN) for database optimization. The architecture prioritizes modularity, performance, and explainability while providing measurable improvements over traditional optimization approaches. The system has been validated through comprehensive testing and benchmarking, making it suitable for both research and production deployment scenarios.
 
-## Usage Examples & CLI Commands
+## 🎯 Getting Started - Interactive Demo Guide
 
-### Command Line Interface
+The Intelligent Database Optimizer provides multiple demonstration experiences designed for different audiences and use cases. Choose your preferred interaction style below:
+
+### 🚀 Quick Start - Interactive Demo
+
+Launch the comprehensive interactive demo system:
+
 ```bash
-# Complete system demonstration
-python main.py --mode demo
-
-# Train DQN agents for custom episodes
-python main.py --mode train --episodes 1000
-
-# Optimize specific query with chosen strategy  
-python main.py --mode optimize --query "SELECT * FROM customers WHERE nation_key = 1" --strategy hybrid
-
-# Run performance evaluation benchmark
-python main.py --mode evaluate --trials 10
+python main.py --interactive
 ```
 
-### Programmatic Usage
-```python
-from main import IntelligentDBOptimizer
-from src.agents.llm_query_agent import LangChainQueryAgent
+This launches an enhanced menu with 6 specialized demo experiences:
+
+#### 📋 Demo Experience Options
+
+**1. 🎯 Complete System Showcase**
+- **Purpose**: Full 6-phase comprehensive demonstration
+- **Duration**: ~5-7 minutes
+- **Audience**: Stakeholders, researchers, comprehensive evaluation
+- **Features**: Knowledge graph analysis, query optimization, strategy comparison, performance metrics, LLM insights
+
+**2. ⚡ Quick Optimization Demo**  
+- **Purpose**: Fast optimization showcase across query complexity levels
+- **Duration**: ~2-3 minutes
+- **Audience**: Quick demonstrations, time-constrained presentations
+- **Features**: 3-query test suite, real-time strategy comparison, performance timing
+
+**3. 🧠 Knowledge Graph Explorer**
+- **Purpose**: Deep dive into database schema analysis and relationship mapping
+- **Duration**: ~3-4 minutes  
+- **Audience**: Database administrators, schema designers
+- **Features**: Schema statistics, relationship analysis, optimization insights
+
+**4. 📊 Performance Benchmarker**
+- **Purpose**: Detailed performance comparison with comprehensive metrics
+- **Duration**: ~4-5 minutes
+- **Audience**: Performance analysts, research validation
+- **Features**: Strategy comparison tables, statistical analysis, improvement quantification
+
+**5. 🔧 Custom Query Optimizer**
+- **Purpose**: Interactive testing with user-provided SQL queries
+- **Duration**: Variable (user-driven)
+- **Audience**: Database developers, custom testing scenarios
+- **Features**: Real-time query input, multi-strategy analysis, detailed explanations
+
+**6. 🎓 Educational Tour**
+- **Purpose**: Step-by-step learning experience explaining system components
+- **Duration**: ~6-8 minutes
+- **Audience**: Students, newcomers to AI database optimization
+- **Features**: Concept explanations, DQN principles, LLM integration benefits
+
+### 🛠️ Command Line Demonstrations
+
+For automated demonstrations and scripted scenarios:
+
+**Full System Demo**
+```bash
+# Comprehensive automated demonstration
+python main.py --mode demo --save-results --verbose
+
+# Quick demo without result saving
+python main.py --mode demo
+```
+
+**Specific Query Testing**
+```bash
+# Test hybrid optimization strategy
+python main.py --mode optimize \
+  --query "SELECT c.name, COUNT(o.order_key) FROM customers c JOIN orders o ON c.customer_key = o.customer_key GROUP BY c.name" \
+  --strategy hybrid --verbose
+
+# Compare all strategies for a specific query
+for strategy in rule_based dqn_based hybrid; do
+  python main.py --mode optimize \
+    --query "SELECT * FROM customers WHERE nation_key = 1" \
+    --strategy $strategy --verbose
+done
+```
+
+**Training & Evaluation**
+```bash
+# Train DQN system with custom episodes
+python main.py --mode train --episodes 500 --save-results
+
+# Performance evaluation with detailed metrics
+python main.py --mode evaluate --trials 10 --verbose
+```
+
+### 🎬 Demo Walkthrough Examples
+
+#### Example 1: Academic Presentation Demo
+```bash
+# Start with educational tour to explain concepts
+echo "6" | python main.py --interactive
+
+# Follow with complete system showcase
+echo "1" | python main.py --interactive
+
+# End with custom query demonstration
+echo "5" | python main.py --interactive
+```
+
+#### Example 2: Industry Stakeholder Demo
+```bash
+# Quick overview demonstration
+echo "2" | python main.py --interactive
+
+# Performance benchmarking
+echo "4" | python main.py --interactive
+
+# Custom query testing with real scenarios
+echo "5" | python main.py --interactive
+```
+
+#### Example 3: Technical Deep Dive
+```bash
+# Knowledge graph exploration
+echo "3" | python main.py --interactive
+
+# Complete system analysis
+echo "1" | python main.py --interactive
+
+# Performance comparison
+echo "4" | python main.py --interactive
+```
+
+### 📊 Demo Output & Results
+
+**Automatic Result Persistence**
+- Demo results automatically saved to `demo_results/demo_results_YYYYMMDD_HHMMSS.json`
+- Training models saved to `models/` directory with timestamps
+- Performance metrics exported as JSON with detailed statistics
+
+**Sample Demo Output**
+```json
+{
+  "demonstration_timestamp": "2026-02-04T09:00:00.000000",
+  "system_status": "operational", 
+  "components_tested": ["knowledge_graph", "query_optimization", "strategy_comparison"],
+  "optimization_examples": [
+    {
+      "query": "SELECT * FROM customers WHERE nation_key = 1",
+      "strategies_tested": ["rule_based", "dqn_based", "hybrid"],
+      "best_strategy": "hybrid",
+      "cost_improvement": "15.2%",
+      "execution_time": "1.2ms"
+    }
+  ],
+  "performance_stats": {
+    "total_queries_tested": 12,
+    "average_improvement": "18.7%",
+    "success_rate": 100.0,
+    "demo_duration": "4.5 minutes"
+  }
+}
+```
+
+### 🎯 Use Case Scenarios
+
+**Research & Academic Use**
+```bash
+# Comprehensive research demonstration
+python main.py --interactive
+# Choose option 1 for complete system showcase
+# Follow with option 6 for educational content
+# Use option 4 for performance validation
+```
+
+**Industry Demonstrations**
+```bash
+# Quick business-focused demo
+python main.py --mode demo --save-results
+# Professional automated demonstration
+# Results saved for stakeholder review
+```
+
+**Educational Training**
+```bash
+# Learning-focused experience
+python main.py --interactive
+# Start with option 6 (Educational Tour)
+# Progress through increasing complexity
+# End with hands-on testing (option 5)
+```
+
+**Development & Testing**
+```bash
+# Developer workflow testing
+python main.py --mode optimize --query "YOUR_SQL_QUERY" --strategy hybrid --verbose
+# Custom query testing with detailed output
+# Strategy comparison and performance analysis
+```
+
+### 💡 Pro Tips for Demonstrations
+
+1. **For First-Time Users**: Start with Educational Tour (Option 6) to understand concepts
+2. **For Time-Constrained Demos**: Use Quick Optimization Demo (Option 2) 
+3. **For Technical Audiences**: Begin with Knowledge Graph Explorer (Option 3)
+4. **For Performance Focus**: Use Performance Benchmarker (Option 4)
+5. **For Interactive Engagement**: Use Custom Query Optimizer (Option 5)
+
+### 🚀 System Requirements for Demos
+
+- **Memory**: 2GB+ recommended for full demos
+- **Time**: Allow 2-8 minutes depending on demo type
+- **Dependencies**: All requirements from `requirements.txt` installed
+- **Optional**: Ollama for enhanced LLM demonstrations
+
+### 📈 Demo Success Metrics
+
+The system tracks and reports:
+- **Query optimization improvements** (cost reduction percentages)
+- **Strategy effectiveness** across different query types
+- **System component performance** and reliability
+- **User engagement metrics** (demo completion rates)
+- **Educational effectiveness** (concept comprehension indicators)
+
+### 📚 Additional Documentation
+
+For complete technical specifications, performance benchmarks, and implementation details:
 
 # System initialization
 optimizer = IntelligentDBOptimizer()

@@ -4,6 +4,7 @@ Test the knowledge graph system.
 import sys
 import os
 sys.path.append('src')
+import pytest
 
 from src.database_environment.db_simulator import DatabaseSimulator
 from src.knowledge_graph.schema_ontology import DatabaseSchemaKG
