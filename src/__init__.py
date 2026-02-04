@@ -12,7 +12,7 @@ from .agents.dqn_agent import DQNAgent, MultiAgentDQN
 from .agents.rl_environment import QueryOptimizationEnv
 from .database_environment.db_simulator import DatabaseSimulator
 from .knowledge_graph.schema_ontology import DatabaseSchemaKG
-from .optimization.query_optimizer import QueryOptimizer, OptimizationStrategy
+from .optimization.hybrid_optimizer import HybridOptimizer, OptimizationResult
 from .utils.logging import setup_logging as setup_logger
 
 __all__ = [
@@ -21,7 +21,7 @@ __all__ = [
     "QueryOptimizationEnv",
     "DatabaseSimulator",
     "DatabaseSchemaKG",
-    "QueryOptimizer",
-    "OptimizationStrategy",
+    "HybridOptimizer",
+    "OptimizationResult",
     "setup_logger"
 ]

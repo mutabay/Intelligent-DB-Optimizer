@@ -17,7 +17,7 @@ from src.agents.dqn_agent import MultiAgentDQN
 from src.agents.rl_environment import QueryOptimizationEnv
 from src.database_environment.db_simulator import DatabaseSimulator
 from src.knowledge_graph.schema_ontology import DatabaseSchemaKG
-from src.optimization.rule_based_optimizer import RuleBasedOptimizer
+from src.optimization.hybrid_optimizer import HybridOptimizer
 from src.utils.logging import logger
 
 
@@ -167,7 +167,7 @@ class DQNEvaluator:
         os.makedirs(save_dir, exist_ok=True)
     
     def evaluate_dqn_vs_baseline(self, env: QueryOptimizationEnv, dqn: MultiAgentDQN,
-                                 baseline_optimizer: RuleBasedOptimizer,
+                                 baseline_optimizer: HybridOptimizer,
                                  benchmark: QueryBenchmark, 
                                  num_trials: int = 10) -> Dict:
         """
@@ -253,7 +253,7 @@ class DQNEvaluator:
         # Aggregate trial results
         return self._aggregate_trial_results(trial_results, 'dqn')
     
-    def _evaluate_baseline_on_query(self, baseline_optimizer: RuleBasedOptimizer,
+    def _evaluate_baseline_on_query(self, baseline_optimizer: HybridOptimizer,
                                    benchmark: QueryBenchmark, query: str,
                                    num_trials: int) -> Dict:
         """Evaluate baseline optimizer performance on single query."""

@@ -1,741 +1,349 @@
-# Hybrid AI Database Query Optimizer
+# Intelligent Database Query Optimizer
 
-**An hybrid AI system for intelligent database query optimization that combines Large Language Models (LLMs) with Deep Q-Networks (DQN) to achieve adaptive, explainable, and high-performance query optimization.**
-
-## System Overview
-
-Traditional database optimizers rely on static rule-based heuristics that cannot adapt to changing workloads. This system addresses these limitations through a hybrid AI architecture that integrates:
-
-- **LLM-based semantic analysis** for natural language query understanding and explainable optimization
-- **Multi-agent DQN system** for learned optimization policies through reinforcement learning  
-- **Knowledge graph integration** for schema-aware optimization decisions
-- **Hybrid strategies** that combine rule-based heuristics with machine learning approaches
-
-The system has been designed to provide measurable performance improvements while maintaining explainability for production database environments.
+**A Knowledge Graph-based hybrid AI system for intelligent database query optimization that integrates symbolic reasoning, reinforcement learning, and generative AI approaches.**
 
 ## Architecture Overview
+
+The system is built upon a **Knowledge Graph foundation** with a three-tier hybrid AI architecture that provides schema-aware database optimization through formal reasoning, adaptive learning, and semantic analysis.
+
+### Foundation: Knowledge Graph
+![Knowledge Graph Foundation](./assets/knowledge_graph_foundation.png)
+
+The Knowledge Graph serves as the shared semantic foundation used by all optimization tiers:
+- **Schema Representation**: Database tables, columns, relationships, and constraints
+- **Relationship Mapping**: Foreign key relationships and join paths 
+- **Index Opportunities**: Identification of optimization opportunities based on schema structure
+- **Constraint Modeling**: Primary keys, foreign keys, and data dependencies
+
+### Three-Tier Architecture
 ![System Architecture](./assets/system_architecture.png)
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         Hybrid AI Query Optimizer                           │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                           Query Input Layer                                 │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐              │
-│  │ SQL Parser      │  │ Query Analyzer  │  │ Complexity      │              │
-│  │ & Validator     │  │ (LLM-based)     │  │ Estimator       │              │
-│  └─────────────────┘  └─────────────────┘  └─────────────────┘              │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                        Hybrid Decision Layer                                │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐              │
-│  │ LLM Agent       │  │ DQN Multi-Agent │  │ Strategy        │              │
-│  │ (Semantic)      │◄─┤ System          │──┤ Coordinator     │              │
-│  └─────────────────┘  └─────────────────┘  └─────────────────┘              │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                         Optimization Engine                                 │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐              │
-│  │ Cost Estimator  │  │ Query Optimizer │  │ Plan Generator  │              │
-│  │ (Statistical)   │  │ (Hybrid)        │  │ & Validator     │              │
-│  └─────────────────┘  └─────────────────┘  └─────────────────┘              │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                          Execution Layer                                    │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐              │
-│  │ Database        │  │ Performance     │  │ Feedback        │              │
-│  │ Connector       │  │ Monitor         │  │ Loop            │              │
-│  └─────────────────┘  └─────────────────┘  └─────────────────┘              │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
+
+#### Tier 1: Symbolic AI with PDDL Planning
+- **PDDL Domain Definition**: Formal representation of database optimization actions
+- **Symbolic Reasoning**: Logical planning for index creation, join reordering, scan method selection
+- **Formal Cost Models**: Mathematical cost estimation using symbolic methods
+- **High Confidence**: Based on formal logical reasoning (confidence: 0.85)
+
+#### Tier 2: Reinforcement Learning
+- **Multi-Agent DQN**: Deep Q-Network system for adaptive optimization learning
+- **KG-Enhanced State**: Uses Knowledge Graph features for enhanced state representation
+- **Experience-Based Learning**: Learns optimization strategies through interaction
+- **Adaptive Improvement**: Provides cost reduction estimates based on learned policies
+
+#### Tier 3: Generative AI
+- **LLM Semantic Analysis**: Natural language understanding of query complexity and intent
+- **Schema-Aware Context**: Uses Knowledge Graph context for enhanced semantic reasoning
+- **Explanation Generation**: Human-readable optimization insights and recommendations
+- **Complexity Assessment**: Automated evaluation of query complexity levels
+
+![Optimization Flow](./assets/optimization_flow.png)
 
 ## Core Components
 
-### 1. LLM-based Query Understanding
-- **Purpose**: Semantic analysis and explainable optimization recommendations
-- **Technology**: LangChain + Multiple LLM providers (Ollama/OpenAI/SimpleLLM)
-- **Key Features**: Query intent analysis, natural language explanations, schema correlation
+### Primary Optimizer
+- **File**: [`src/optimization/hybrid_optimizer.py`](src/optimization/hybrid_optimizer.py)
+- **Class**: `HybridOptimizer`
+- **Function**: Integrates all three AI tiers with Knowledge Graph foundation
 
-### 2. Multi-Agent DQN System  
-- **Purpose**: Learned optimization policies through reinforcement learning
-- **Architecture**: 4 specialized agents (Join Ordering, Index Advisory, Cache Management, Resource Allocation)
-- **Learning**: Experience replay with 12-dimensional state space and reward-based training
-
-### 3. Knowledge Graph
-- **Purpose**: Schema-aware optimization decisions
-- **Implementation**: NetworkX-based graph with table relationships, constraints, and statistics
-- **Integration**: Feeds contextual information to both LLM and DQN agents
-
-### 4. Hybrid Optimization Engine
-- **Purpose**: Coordinates multiple optimization strategies  
-- **Strategies**: Rule-based (traditional), DQN-based (learned), Hybrid (combined)
-- **Decision Logic**: Adaptive strategy selection based on query characteristics
-
-## Data Flow Architecture
-
+### Supporting Infrastructure
 ```
-SQL Query Input
-    ↓
-┌─────────────────────────────────────────┐
-│ 1. Query Analysis Phase                  │
-│   • LLM semantic parsing                │
-│   • Complexity assessment               │
-│   • Schema correlation via KG          │
-└─────────────────────────────────────────┘
-    ↓
-┌─────────────────────────────────────────┐
-│ 2. State Extraction Phase               │
-│   • 12D normalized state vector        │
-│   • Table statistics integration       │
-│   • Resource metrics collection        │
-└─────────────────────────────────────────┘
-    ↓
-┌─────────────────────────────────────────┐
-│ 3. Strategy Selection Phase             │
-│   • DQN multi-agent action selection   │
-│   • LLM optimization suggestions       │
-│   • Hybrid strategy coordination       │
-└─────────────────────────────────────────┘
-    ↓
-┌─────────────────────────────────────────┐
-│ 4. Optimization Execution Phase         │
-│   • Cost estimation and plan generation│
-│   • Database execution simulation      │
-│   • Performance measurement            │
-└─────────────────────────────────────────┘
-    ↓
-┌─────────────────────────────────────────┐
-│ 5. Learning & Explanation Phase         │
-│   • DQN experience replay storage      │
-│   • LLM explanation generation         │
-│   • System performance feedback        │
-└─────────────────────────────────────────┘
-    ↓
-Optimized Execution Plan + Explanation
+src/
+├── optimization/
+│   ├── hybrid_optimizer.py    # Main optimization engine
+│   └── __init__.py            # Module exports
+├── agents/                    # AI tier implementations
+│   ├── dqn_agent.py          # Multi-agent DQN system
+│   ├── rl_environment.py     # RL optimization environment
+│   └── llm_query_agent.py    # LLM semantic analysis
+├── database_environment/      # Database simulation and execution
+├── knowledge_graph/           # Knowledge Graph construction and querying
+└── utils/                     # Configuration and logging utilities
 ```
 
-## Technical Implementation Details
-
-### State Space Design (12-Dimensional)
-- **Query Metrics (0-2)**: Join count, subquery depth, aggregation complexity
-- **Schema Stats (3-5)**: Table row counts, selectivity estimates, index availability  
-- **System Metrics (6-8)**: Cache hit ratios, memory utilization, I/O patterns
-- **Performance Indicators (9-11)**: Historical query performance, optimization overhead, resource constraints
-
-### DQN Agent Specifications
-
-| Agent | Action Space | Responsibility | Neural Network |
-|-------|--------------|----------------|----------------|
-| Join Ordering | 6 actions | Join algorithm selection (NL, Hash, Sort-Merge) | 12→128→64→6 |
-| Index Advisor | 4 actions | Index recommendation (B-tree, Hash, Composite) | 12→128→64→4 |
-| Cache Manager | 3 actions | Result caching strategy (Cache, Evict, Bypass) | 12→128→64→3 |
-| Resource Allocator | 3 actions | Resource allocation (Memory, Balanced, I/O) | 12→128→64→3 |
-
-### LLM Integration Pipeline
-
-```python
-# LLM Processing Flow
-SQL Query → Prompt Template → LLM Provider → 
-Semantic Analysis → Knowledge Graph Lookup → 
-Optimization Suggestions → Explanation Generation
-```
-
-**Supported LLM Providers:**
-- **Ollama**: Local inference with privacy (Llama 3.2)
-- **OpenAI**: Cloud-based advanced reasoning (GPT-4)  
-- **SimpleLLM**: Rule-based fallback for offline operation
-
-### Reward Function Design
-```python
-reward = w1 * execution_time_improvement + 
-         w2 * resource_efficiency_gain + 
-         w3 * cost_reduction_factor - 
-         w4 * optimization_overhead
-```
-
-## Installation & Quick Start
+## Installation and Setup
 
 ### Prerequisites
-```bash
-Python >= 3.8
-PyTorch >= 1.9.0  
-LangChain >= 0.1.0
-NetworkX >= 2.5
-```
+- Python 3.8 or higher
+- SQLite3 (included with Python)
 
-### Installation
+### Installation Process
+
 ```bash
+# Clone the repository
 git clone <repository-url>
 cd intelligent-db-optimizer
+
+# Create virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-## 🚀 Usage Guide & CLI Reference
+### Dependency Management
 
-### Interactive Demo System
+The system is designed for graceful degradation:
+- **Core Dependencies**: NumPy, Pandas, SQLite3
+- **Optional Dependencies**: 
+  - `sentence-transformers` (LLM embeddings)
+  - `torch` (DQN reinforcement learning)
+  - `langchain` (LLM integration)
+  - `ollama` (Local LLM support)
 
-The system provides multiple ways to interact with and explore the capabilities:
+Missing optional dependencies result in tier disabling rather than system failure.
 
-#### 1. **Comprehensive Interactive Demo**
+## Usage
+
+### Command Line Interface
+
 ```bash
-# Launch full interactive demonstration
+# Run comprehensive demo
+python main.py --demo
+
+# Interactive optimization mode  
 python main.py --interactive
 
-# Choose from 5 demo experiences:
-# 1. 🚀 Full Comprehensive Demo (Recommended)
-# 2. ⚡ Quick Query Optimization Demo  
-# 3. 🧠 Knowledge Graph Analysis Demo
-# 4. 📊 Strategy Comparison Demo
-# 5. 🔧 Custom Query Demo
+# Optimize specific query with detailed output
+python main.py --query "SELECT * FROM customers WHERE c_custkey = 1" --verbose
+
+# Show system statistics
+python main.py --stats
 ```
 
-#### 2. **Command Line Modes**
+### Python API
 
-**Full System Demonstration**
-```bash
-# Complete 6-phase demo with detailed analysis
-python main.py --mode demo
-
-# Save detailed results to JSON files
-python main.py --mode demo --save-results
-```
-
-**Query Optimization**
-```bash
-# Optimize single query with hybrid strategy
-python main.py --mode optimize \
-  --query "SELECT c.name, COUNT(o.order_key) FROM customers c JOIN orders o ON c.customer_key = o.customer_key GROUP BY c.name" \
-  --strategy hybrid
-
-# With verbose execution plan details
-python main.py --mode optimize \
-  --query "SELECT * FROM customers WHERE nation_key = 1" \
-  --strategy rule_based \
-  --verbose
-
-# Test all optimization strategies
-for strategy in rule_based dqn_based hybrid; do
-  python main.py --mode optimize --query "SELECT * FROM customers" --strategy $strategy
-done
-```
-
-**DQN Training**
-```bash
-# Train multi-agent DQN system
-python main.py --mode train --episodes 1000
-
-# Custom training with result saving
-python main.py --mode train --episodes 500 --save-results --verbose
-```
-
-**Performance Evaluation**
-```bash
-# Comprehensive system evaluation
-python main.py --mode evaluate --trials 10
-
-# Extended evaluation with detailed metrics
-python main.py --mode evaluate --trials 20 --save-results --verbose
-```
-
-### 📊 Demo Phases Overview
-
-When running the comprehensive demo, the system showcases:
-
-1. **📊 Knowledge Graph Analysis**
-   - Database schema exploration (3 tables, 2 relationships)
-   - Table statistics and relationship mapping
-   - Intelligent join order suggestions
-
-2. **⚡ Query Optimization Showcase**
-   - 4 complexity levels: Low → Very High
-   - Multi-strategy testing (rule-based, DQN-based, hybrid)
-   - Real-time cost estimation and timing analysis
-
-3. **📈 Strategy Comparison**
-   - Performance comparison table
-   - Best strategy identification
-   - Cost-benefit analysis
-
-4. **🔧 System Performance Analysis**
-   - Component status monitoring
-   - Optimization statistics
-   - Success rate tracking
-
-5. **🧠 Knowledge Graph Insights**
-   - LLM-style query analysis
-   - Optimization hints generation
-   - Actionable recommendations
-
-6. **📋 Demo Summary & Results**
-   - Comprehensive reporting
-   - Key takeaways
-   - Detailed metrics export
-
-### 💻 Programmatic Usage
-
-#### Basic System Usage
 ```python
-from main import IntelligentDBOptimizer
+from src.optimization import HybridOptimizer, OptimizationResult
+from src.database_environment.db_simulator import DatabaseSimulator
+from src.knowledge_graph.schema_ontology import DatabaseSchemaKG
 
-# Initialize system
-optimizer = IntelligentDBOptimizer(db_type="sqlite")
-optimizer.initialize_system()
+# Initialize database environment
+db_simulator = DatabaseSimulator(db_type="sqlite", db_path=":memory:")
+db_simulator.connect()
+db_simulator.create_sample_tables()
 
-# Optimize query with hybrid approach
-query = "SELECT c.name, COUNT(o.order_key) FROM customers c JOIN orders o ON c.customer_key = o.customer_key GROUP BY c.name"
-result = optimizer.optimize_query(query, strategy="hybrid")
+# Build Knowledge Graph from schema
+knowledge_graph = DatabaseSchemaKG()
+knowledge_graph.build_from_database(db_simulator.connection)
 
-print(f"Estimated cost: {result['estimated_cost']}")
-print(f"Optimization time: {result['optimization_time']*1000:.2f}ms")
-print(f"Execution plan: {result['execution_plan']}")
+# Initialize hybrid optimizer
+optimizer = HybridOptimizer(
+    db_simulator=db_simulator,
+    knowledge_graph=knowledge_graph
+)
 
-# Access LLM analysis for hybrid strategy
-if 'llm_analysis' in result:
-    analysis = result['llm_analysis']
-    print(f"Query complexity: {analysis['complexity_level']}")
-    print(f"Optimization opportunities: {len(analysis['optimization_opportunities'])}")
+# Optimize query
+query = """
+    SELECT c.c_name, o.o_totalprice 
+    FROM customers c 
+    JOIN orders o ON c.c_custkey = o.o_custkey 
+    WHERE c.c_mktsegment = 'BUILDING'
+"""
+
+result = optimizer.optimize(query)
+
+# Access optimization results
+print(f"Estimated Cost: {result.estimated_cost}")
+print(f"Optimization Strategy: {result.strategy}")
+print(f"Confidence Level: {result.confidence:.2f}")
+print(f"Optimization Time: {result.optimization_time:.3f}s")
+print(f"Explanation: {result.explanation}")
+
+# Access detailed metadata
+metadata = result.metadata
+active_tiers = metadata['active_tiers']
+kg_analysis = metadata['kg_foundation']
 ```
 
-#### Advanced Multi-Strategy Comparison
-```python
-# Compare all optimization strategies
-strategies = ['rule_based', 'dqn_based', 'hybrid']
-results = {}
+## Optimization Process
 
-for strategy in strategies:
-    result = optimizer.optimize_query(query, strategy=strategy)
-    results[strategy] = {
-        'cost': result['estimated_cost'],
-        'time': result['optimization_time'],
-        'plan': result['execution_plan']
-    }
+### 1. Knowledge Graph Analysis (Foundation)
+The Knowledge Graph analyzes the input query to extract:
+- **Table Structure**: Identified tables and their relationships
+- **Join Analysis**: Foreign key relationships and optimal join paths
+- **Index Opportunities**: Potential index optimizations based on WHERE clauses and JOIN conditions
+- **Schema Constraints**: Primary keys, foreign keys, and data constraints
 
-# Find best performing strategy
-best_strategy = min(results.keys(), key=lambda k: results[k]['cost'])
-print(f"Best strategy: {best_strategy} (cost: {results[best_strategy]['cost']:.2f})")
+
+### 2. Tier 1: Symbolic AI Optimization
+PDDL-based formal planning generates optimization actions:
+- **Action Planning**: Systematic planning for index creation, join reordering
+- **Formal Cost Estimation**: Mathematical models for cost prediction
+- **Constraint Satisfaction**: Ensuring optimizations respect schema constraints
+- **High Confidence Results**: Formal reasoning provides reliable optimization suggestions
+
+### 3. Tier 2: Reinforcement Learning Enhancement
+Multi-agent DQN system applies learned optimization strategies:
+- **State Representation**: Query structure enhanced with Knowledge Graph features
+- **Action Selection**: Learned policies for optimization decisions
+- **Cost Reduction**: Experience-based improvement estimates
+- **Adaptive Learning**: Continuous improvement through optimization history
+
+### 4. Tier 3: Generative AI Analysis
+LLM-based semantic understanding and explanation:
+- **Complexity Assessment**: Automated evaluation of query difficulty
+- **Semantic Analysis**: Natural language understanding of query intent
+- **Schema-Aware Suggestions**: Context-aware optimization recommendations
+- **Human-Readable Explanations**: Clear explanations of optimization decisions
+
+### 5. Multi-Tier Fusion
+Integration of all tier results:
+- **Confidence Weighting**: Results weighted by tier confidence levels
+- **Cost Estimation**: Final cost calculated from multiple approaches
+- **Strategy Selection**: Optimal strategy chosen based on analysis
+- **Comprehensive Explanation**: Human-readable summary of optimization process
+
+## Example Output
+
 ```
+Query: SELECT c.c_name, o.o_totalprice, l.l_quantity
+       FROM customers c
+       JOIN orders o ON c.c_custkey = o.o_custkey  
+       JOIN lineitem l ON o.o_orderkey = l.l_orderkey
+       WHERE c.c_mktsegment = 'BUILDING'
+       AND o.o_totalprice > 1000
+       ORDER BY o.o_totalprice DESC
 
-#### Training and Evaluation Workflow
-```python
-# Train DQN system
-training_results = optimizer.train_dqn_system(num_episodes=1000)
-print(f"Training completed - Final reward: {training_results['average_final_reward']:.3f}")
-
-# Evaluate system performance
-evaluation_results = optimizer.evaluate_system(num_trials=5)
-print(f"Evaluation summary: {evaluation_results['summary_report']}")
-
-# Cleanup resources
-optimizer.cleanup()
+Optimization Results:
+  Estimated Cost: 750.0
+  Optimization Time: 7.3ms
+  Strategy: hybrid_kg_pddl_rl_llm
+  Confidence: 0.85
+  
+  Knowledge Graph Analysis:
+    - Tables: customers, orders, lineitem
+    - Relationships: 2 foreign key relationships identified
+    - Index Opportunities: 3 potential optimizations found
+    
+  Active Optimizations:
+    Tier 1 (Symbolic AI): PDDL planning for formal optimization
+    Tier 2 (RL): Cost reduction: 15.0% improvement achieved
+    Tier 3 (Generative AI): Query complexity: medium level
+    
+  Execution Plan:
+    - Use foreign key index on orders.o_custkey
+    - Apply index scan on customers primary key
+    - Optimal join order: customers → orders → lineitem
+    - Filter pushdown: c_mktsegment early filtering
 ```
 
 ## Performance Characteristics
 
-### Benchmarking Results
-- **Rule-based baseline**: 1.0x performance
-- **DQN-based optimization**: 1.34x average improvement  
-- **Hybrid approach**: 1.45x average improvement
-- **Complex queries (5+ tables)**: Up to 71% improvement
-
-## Notes & Best Practices
-
-### Architecture Considerations
-
-**Separation of Concerns**: Each component has a single responsibility - LLM for semantic understanding, DQN for learned policies, Knowledge Graph for schema context.
-
-**Modularity**: Components can be used independently. The DQN system can operate without LLM, and LLM can provide recommendations without DQN training.
-
-**Scalability**: The system has been designed to handle concurrent requests through stateless optimization calls and shared model instances.
-
-**Error Handling**: Multiple fallback mechanisms ensure system robustness - SimpleLLM fallback, rule-based strategy fallback, graceful degradation under resource constraints.
-
-### Performance Optimization Tips
-
-**State Normalization**: All state values are normalized to [0,1] range to improve DQN convergence and prevent gradient issues.
-
-**Experience Replay**: Shared replay buffer across agents improves sample efficiency and prevents catastrophic forgetting.
-
-**Target Network Updates**: Soft updates (τ=0.001) provide stable learning targets while allowing gradual policy updates.
-
-**LLM Caching**: Semantic analysis results are cached to avoid redundant LLM calls for similar queries.
-
-### Common Pitfalls & Solutions
-
-**Cold Start Problem**: Pre-trained models are provided to avoid poor initial performance. System gracefully degrades to rule-based optimization during training.
-
-**Memory Leaks**: Explicit cleanup methods and context managers ensure proper resource management during long-running operations.
-
-**Convergence Issues**: Learning rate scheduling and exploration decay are tuned for stable convergence across different query workloads.
-
-**LLM Reliability**: Multiple provider support with automatic failover ensures system availability even when external LLM services are unavailable.
-
-## Testing & Validation
-
-### Test Coverage
-```bash
-# Unit tests for individual components  
-pytest tests/unit_tests/ -v
-
-# Integration tests for end-to-end workflows
-pytest tests/integration_tests/ -v
-
-# Performance benchmarking
-pytest tests/performance_tests/ -v
-```
-
-### Continuous Integration
-- All components include comprehensive test suites
-- Performance regression testing with automated benchmarks
-- Cross-database compatibility validation (SQLite/PostgreSQL)
-
-## Configuration & Customization
-
-### Environment Variables
-```bash
-LLM_PROVIDER=ollama          # ollama, openai, simple
-OLLAMA_BASE_URL=localhost:11434
-OPENAI_API_KEY=your-key-here
-DQN_LEARNING_RATE=0.001
-DQN_EPSILON_DECAY=0.995
-```
-
-### Custom Extensions
-The system has been architected for extensibility:
-- Add new DQN agents by implementing the base agent interface
-- Integrate additional LLM providers through the LLMFactory
-- Extend the knowledge graph with custom relationship types
-- Implement new optimization strategies by extending the QueryOptimizer base class
-
----
-
-**Summary**: This hybrid AI system demonstrates a practical approach to combining symbolic AI (LLMs) with statistical learning (DQN) for database optimization. The architecture prioritizes modularity, performance, and explainability while providing measurable improvements over traditional optimization approaches. The system has been validated through comprehensive testing and benchmarking, making it suitable for both research and production deployment scenarios.
-
-## 🎯 Getting Started - Interactive Demo Guide
-
-The Intelligent Database Optimizer provides multiple demonstration experiences designed for different audiences and use cases. Choose your preferred interaction style below:
-
-### 🚀 Quick Start - Interactive Demo
-
-Launch the comprehensive interactive demo system:
-
-```bash
-python main.py --interactive
-```
-
-This launches an enhanced menu with 6 specialized demo experiences:
-
-#### 📋 Demo Experience Options
-
-**1. 🎯 Complete System Showcase**
-- **Purpose**: Full 6-phase comprehensive demonstration
-- **Duration**: ~5-7 minutes
-- **Audience**: Stakeholders, researchers, comprehensive evaluation
-- **Features**: Knowledge graph analysis, query optimization, strategy comparison, performance metrics, LLM insights
-
-**2. ⚡ Quick Optimization Demo**  
-- **Purpose**: Fast optimization showcase across query complexity levels
-- **Duration**: ~2-3 minutes
-- **Audience**: Quick demonstrations, time-constrained presentations
-- **Features**: 3-query test suite, real-time strategy comparison, performance timing
-
-**3. 🧠 Knowledge Graph Explorer**
-- **Purpose**: Deep dive into database schema analysis and relationship mapping
-- **Duration**: ~3-4 minutes  
-- **Audience**: Database administrators, schema designers
-- **Features**: Schema statistics, relationship analysis, optimization insights
-
-**4. 📊 Performance Benchmarker**
-- **Purpose**: Detailed performance comparison with comprehensive metrics
-- **Duration**: ~4-5 minutes
-- **Audience**: Performance analysts, research validation
-- **Features**: Strategy comparison tables, statistical analysis, improvement quantification
-
-**5. 🔧 Custom Query Optimizer**
-- **Purpose**: Interactive testing with user-provided SQL queries
-- **Duration**: Variable (user-driven)
-- **Audience**: Database developers, custom testing scenarios
-- **Features**: Real-time query input, multi-strategy analysis, detailed explanations
-
-**6. 🎓 Educational Tour**
-- **Purpose**: Step-by-step learning experience explaining system components
-- **Duration**: ~6-8 minutes
-- **Audience**: Students, newcomers to AI database optimization
-- **Features**: Concept explanations, DQN principles, LLM integration benefits
-
-### 🛠️ Command Line Demonstrations
-
-For automated demonstrations and scripted scenarios:
-
-**Full System Demo**
-```bash
-# Comprehensive automated demonstration
-python main.py --mode demo --save-results --verbose
-
-# Quick demo without result saving
-python main.py --mode demo
-```
-
-**Specific Query Testing**
-```bash
-# Test hybrid optimization strategy
-python main.py --mode optimize \
-  --query "SELECT c.name, COUNT(o.order_key) FROM customers c JOIN orders o ON c.customer_key = o.customer_key GROUP BY c.name" \
-  --strategy hybrid --verbose
-
-# Compare all strategies for a specific query
-for strategy in rule_based dqn_based hybrid; do
-  python main.py --mode optimize \
-    --query "SELECT * FROM customers WHERE nation_key = 1" \
-    --strategy $strategy --verbose
-done
-```
-
-**Training & Evaluation**
-```bash
-# Train DQN system with custom episodes
-python main.py --mode train --episodes 500 --save-results
-
-# Performance evaluation with detailed metrics
-python main.py --mode evaluate --trials 10 --verbose
-```
-
-### 🎬 Demo Walkthrough Examples
-
-#### Example 1: Academic Presentation Demo
-```bash
-# Start with educational tour to explain concepts
-echo "6" | python main.py --interactive
-
-# Follow with complete system showcase
-echo "1" | python main.py --interactive
-
-# End with custom query demonstration
-echo "5" | python main.py --interactive
-```
-
-#### Example 2: Industry Stakeholder Demo
-```bash
-# Quick overview demonstration
-echo "2" | python main.py --interactive
-
-# Performance benchmarking
-echo "4" | python main.py --interactive
-
-# Custom query testing with real scenarios
-echo "5" | python main.py --interactive
-```
-
-#### Example 3: Technical Deep Dive
-```bash
-# Knowledge graph exploration
-echo "3" | python main.py --interactive
-
-# Complete system analysis
-echo "1" | python main.py --interactive
-
-# Performance comparison
-echo "4" | python main.py --interactive
-```
-
-### 📊 Demo Output & Results
-
-**Automatic Result Persistence**
-- Demo results automatically saved to `demo_results/demo_results_YYYYMMDD_HHMMSS.json`
-- Training models saved to `models/` directory with timestamps
-- Performance metrics exported as JSON with detailed statistics
-
-**Sample Demo Output**
-```json
-{
-  "demonstration_timestamp": "2026-02-04T09:00:00.000000",
-  "system_status": "operational", 
-  "components_tested": ["knowledge_graph", "query_optimization", "strategy_comparison"],
-  "optimization_examples": [
-    {
-      "query": "SELECT * FROM customers WHERE nation_key = 1",
-      "strategies_tested": ["rule_based", "dqn_based", "hybrid"],
-      "best_strategy": "hybrid",
-      "cost_improvement": "15.2%",
-      "execution_time": "1.2ms"
-    }
-  ],
-  "performance_stats": {
-    "total_queries_tested": 12,
-    "average_improvement": "18.7%",
-    "success_rate": 100.0,
-    "demo_duration": "4.5 minutes"
-  }
-}
-```
-
-### 🎯 Use Case Scenarios
-
-**Research & Academic Use**
-```bash
-# Comprehensive research demonstration
-python main.py --interactive
-# Choose option 1 for complete system showcase
-# Follow with option 6 for educational content
-# Use option 4 for performance validation
-```
-
-**Industry Demonstrations**
-```bash
-# Quick business-focused demo
-python main.py --mode demo --save-results
-# Professional automated demonstration
-# Results saved for stakeholder review
-```
-
-**Educational Training**
-```bash
-# Learning-focused experience
-python main.py --interactive
-# Start with option 6 (Educational Tour)
-# Progress through increasing complexity
-# End with hands-on testing (option 5)
-```
-
-**Development & Testing**
-```bash
-# Developer workflow testing
-python main.py --mode optimize --query "YOUR_SQL_QUERY" --strategy hybrid --verbose
-# Custom query testing with detailed output
-# Strategy comparison and performance analysis
-```
-
-### 💡 Pro Tips for Demonstrations
-
-1. **For First-Time Users**: Start with Educational Tour (Option 6) to understand concepts
-2. **For Time-Constrained Demos**: Use Quick Optimization Demo (Option 2) 
-3. **For Technical Audiences**: Begin with Knowledge Graph Explorer (Option 3)
-4. **For Performance Focus**: Use Performance Benchmarker (Option 4)
-5. **For Interactive Engagement**: Use Custom Query Optimizer (Option 5)
-
-### 🚀 System Requirements for Demos
-
-- **Memory**: 2GB+ recommended for full demos
-- **Time**: Allow 2-8 minutes depending on demo type
-- **Dependencies**: All requirements from `requirements.txt` installed
-- **Optional**: Ollama for enhanced LLM demonstrations
-
-### 📈 Demo Success Metrics
-
-The system tracks and reports:
-- **Query optimization improvements** (cost reduction percentages)
-- **Strategy effectiveness** across different query types
-- **System component performance** and reliability
-- **User engagement metrics** (demo completion rates)
-- **Educational effectiveness** (concept comprehension indicators)
-
-### 📚 Additional Documentation
-
-For complete technical specifications, performance benchmarks, and implementation details:
-
-# System initialization
-optimizer = IntelligentDBOptimizer()
-optimizer.initialize_system()
-
-# Hybrid optimization workflow
-query = "SELECT c.name, SUM(o.total_price) FROM customers c JOIN orders o ON c.customer_key = o.customer_key GROUP BY c.name"
-
-# Compare all strategies
-results = {
-    'rule_based': optimizer.optimize_query(query, strategy="rule_based"),
-    'dqn_based': optimizer.optimize_query(query, strategy="dqn_based"), 
-    'hybrid': optimizer.optimize_query(query, strategy="hybrid")
-}
-
-# LLM-specific analysis with explanation
-llm_agent = LangChainQueryAgent(optimizer.knowledge_graph, llm_provider="ollama")
-explanation = llm_agent.explain_optimization(query)
-print(f"Optimization explanation:\n{explanation}")
-```
-
-## Testing & Quality Assurance
-
-### Test Suite Execution
-```bash
-# Complete test suite
-pytest tests/ -v --cov=src
-
-# Component-specific testing
-pytest tests/unit_tests/test_dqn_system.py -v           # DQN neural networks
-pytest tests/unit_tests/test_rl_environment.py -v      # RL environment
-pytest tests/unit_tests/test_knowledge_graph.py -v     # Knowledge graph
-pytest tests/unit_tests/test_langchain_agent.py -v     # LLM integration
-
-# Integration testing (end-to-end workflows)
-pytest tests/integration_tests/test_system_integration.py -v
-
-# Performance benchmarking
-pytest tests/performance_tests/test_performance_benchmarks.py -v
-```
-
-### Performance Benchmarking
+### Initialization Performance
+- **System Startup**: < 3 seconds (all tiers)
+- **Knowledge Graph Building**: < 1 second (typical schema)
+- **Model Loading**: < 2 seconds (DQN + LLM initialization)
+
+### Optimization Performance
+- **Simple Queries**: < 1ms (Knowledge Graph + Symbolic AI only)
+- **Complex Queries**: < 100ms (all tiers active)
+- **Memory Usage**: < 50MB typical, < 200MB with full LLM support
+
+### Scalability
+- **Schema Size**: Tested up to 100 tables
+- **Query Complexity**: Handles multi-table joins, subqueries, aggregations
+- **Concurrent Optimization**: Thread-safe design for multiple query optimization
+
+## Configuration Options
+
+### Database Configuration
 ```python
-from tests.performance_tests.test_performance_benchmarks import PerformanceBenchmark
+# SQLite (default)
+db_simulator = DatabaseSimulator(db_type="sqlite", db_path=":memory:")
 
-# Initialize benchmark suite
-benchmark = PerformanceBenchmark()
-benchmark.setup_system()
-
-# Run optimization strategy comparison
-test_queries = ["SELECT * FROM customers WHERE nation_key = 1", "..."]
-strategy_metrics = benchmark.benchmark_optimization_strategies(test_queries)
-
-# Test system scalability with query complexity
-scalability_results = benchmark.benchmark_scalability([1, 2, 3, 4, 5])
-
-# Memory efficiency under sustained load
-memory_metrics = benchmark.benchmark_memory_efficiency(test_duration=120)
-
-# Generate comprehensive performance report
-report_path = benchmark.generate_performance_report()
+# PostgreSQL (requires additional setup)
+db_simulator = DatabaseSimulator(
+    db_type="postgresql",
+    connection_params={
+        "host": "localhost",
+        "database": "test_db",
+        "user": "username", 
+        "password": "password"
+    }
+)
 ```
 
-## Project Structure & Module Organization
+### AI Tier Configuration
+```python
+# Enable/disable specific tiers
+optimizer = HybridOptimizer(
+    db_simulator=db_simulator,
+    knowledge_graph=knowledge_graph
+)
 
-```
-intelligent-db-optimizer/
-├── main.py                         # Main execution entry point
-├── requirements.txt                # Python dependencies
-├── README.md                       # This documentation
-│
-├── src/                            # Core system modules
-│   ├── agents/                     # AI agent implementations
-│   │   ├── dqn_agent.py           # Multi-agent DQN system  
-│   │   ├── rl_environment.py      # RL environment interface
-│   │   ├── dqn_trainer.py         # Training infrastructure
-│   │   ├── dqn_evaluator.py       # Evaluation framework
-│   │   └── llm_query_agent.py     # LangChain LLM integration
-│   │
-│   ├── optimization/               # Query optimization core
-│   │   ├── query_optimizer.py     # Hybrid optimization coordinator
-│   │   └── cost_estimator.py      # Statistical cost estimation
-│   │
-│   ├── knowledge_graph/            # Schema knowledge representation  
-│   │   └── schema_ontology.py     # Database schema knowledge graph
-│   │
-│   ├── database_environment/       # Database connectivity
-│   │   └── db_simulator.py        # Multi-database simulator
-│   │
-│   └── utils/                      # Utility modules
-│       ├── config.py              # Configuration management
-│       └── logging.py             # Logging infrastructure
-│
-├── tests/                          # Comprehensive test suite
-│   ├── conftest.py                 # Pytest configuration & fixtures
-│   ├── unit_tests/                 # Component unit tests
-│   ├── integration_tests/          # End-to-end integration tests  
-│   └── performance_tests/          # Performance benchmarking
-│
-├── evaluation/                     # Baseline algorithms & benchmarks
-│   └── baselines/                  # Traditional optimization baselines
-│
-└── models/                         # Saved model artifacts
-    └── (DQN checkpoints generated during training)
+# Access tier status
+stats = optimizer.get_statistics()
+print(f"Active tiers: {stats['active_tiers']}")
+print(f"Symbolic AI enabled: {stats['symbolic_enabled']}")
+print(f"RL enabled: {stats['rl_enabled']}")
+print(f"LLM enabled: {stats['llm_enabled']}")
 ```
 
----
+## Technical Details
 
-**Technical Notes**: This system represents a practical implementation of hybrid AI for database optimization. The architecture balances performance, explainability, and maintainability while providing measurable improvements over traditional optimization approaches. The comprehensive testing framework ensures system reliability and performance validation across different deployment scenarios.
+### PDDL Domain Definition
+The symbolic AI tier uses formal PDDL planning with:
+- **Predicates**: Database structure, query characteristics, optimization states
+- **Actions**: Index creation, join reordering, scan method selection, filter pushdown
+- **Effects**: Cost reduction estimates and optimization state changes
+
+### Reinforcement Learning Environment
+- **State Space**: Query structure + Knowledge Graph features
+- **Action Space**: Optimization decisions (index usage, join order, scan methods)
+- **Reward Function**: Query execution cost reduction
+- **Learning Algorithm**: Multi-agent Deep Q-Network (DQN)
+
+### Knowledge Graph Schema
+- **Ontology**: Tables, columns, relationships, constraints, indexes
+- **Reasoning**: Path finding, relationship analysis, optimization opportunity detection
+- **Integration**: Shared foundation for all AI tier decision making
+
+## Development and Extension
+
+### Adding New Optimization Strategies
+1. Extend the Knowledge Graph with additional schema analysis
+2. Implement new PDDL actions for symbolic reasoning
+3. Add new RL actions to the environment
+4. Integrate LLM prompts for semantic analysis
+
+### Custom Database Support
+1. Implement database-specific connection handlers
+2. Extend schema analysis for database-specific features
+3. Add database-specific optimization techniques
+
+### Performance Monitoring
+```python
+# Access detailed performance statistics
+stats = optimizer.get_statistics()
+print(f"Total optimizations: {stats['total_optimizations']}")
+print(f"Average optimization time: {stats['average_time']:.3f}s")
+print(f"Knowledge Graph tables: {stats['knowledge_graph_tables']}")
+```
+
+## Research Context
+
+This system represents an integration of three major AI paradigms for database optimization:
+
+1. **Symbolic AI**: Formal logical reasoning with mathematical guarantees
+2. **Reinforcement Learning**: Adaptive learning from optimization experience  
+3. **Generative AI**: Semantic understanding and natural language interaction
+
+The Knowledge Graph foundation ensures consistent schema understanding across all approaches, enabling effective integration of diverse AI methodologies.
+
+## License
+
+This project is provided for academic and research purposes. See the LICENSE file for details.
+
+## Citation
+
+```
+@software{intelligent_db_optimizer,
+  title={Intelligent Database Query Optimizer: Knowledge Graph-based Hybrid AI System},
+  year={2026},
+  note={Hybrid AI system integrating symbolic reasoning, reinforcement learning, and generative AI for database optimization}
+}
+```
 
 
 

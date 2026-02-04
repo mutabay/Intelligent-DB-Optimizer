@@ -1,14 +1,14 @@
 """
-Query optimization components.
+Query Optimization Module
 
-Includes query optimizers and optimization strategies.
+Core hybrid optimization for knowledge graph-based database optimization:
+- HybridOptimizer: Main three-tier AI optimization system
+- OptimizationResult: Result container for optimization outputs
 """
 
-from .query_optimizer import QueryOptimizer, OptimizationStrategy
+from .hybrid_optimizer import HybridOptimizer, OptimizationResult
 
 __all__ = [
-    "QueryOptimizer",
-    "OptimizationStrategy"
+    'HybridOptimizer',
+    'OptimizationResult'
 ]
-
-__all__ = ['QueryOptimizer', 'CostEstimator']
