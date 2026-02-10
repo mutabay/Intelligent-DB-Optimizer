@@ -62,9 +62,6 @@ src/
 
 ## Installation and Setup
 
-### Prerequisites
-- Python 3.8 or higher
-- SQLite3 (included with Python)
 
 ### Installation Process
 
@@ -330,20 +327,4 @@ This system represents an integration of three major AI paradigms for database o
 3. **Generative AI**: Semantic understanding and natural language interaction
 
 The Knowledge Graph foundation ensures consistent schema understanding across all approaches, enabling effective integration of diverse AI methodologies.
-
-## License
-
-This project is provided for academic and research purposes. See the LICENSE file for details.
-
-## Citation
-
-```
-@software{intelligent_db_optimizer,
-  title={Intelligent Database Query Optimizer: Knowledge Graph-based Hybrid AI System},
-  year={2026},
-  note={Hybrid AI system integrating symbolic reasoning, reinforcement learning, and generative AI for database optimization}
-}
-```
-
-
 
